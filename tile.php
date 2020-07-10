@@ -15,6 +15,9 @@ if ($z < 14 || $id == 0 || !file_exists("cache/$id.php"))
     exit();
 }
 
+
+include("cache/$id.php");
+
 if ($z > 14)
 {
     $dz = $z - 14;
@@ -22,15 +25,28 @@ if ($z > 14)
     $y = intval($y / (2**$dz));
 }
 
-include("cache/$id.php");
-error_log("$x:$y = ".array_key_exists("$x:$y", $exp));
+$png = imagecreatefrompng("empty256x256.png");
+imagesavealpha($png, true);
+$c_bg = imagecolorallocatealpha($png, 255, 0, 0, 100);
+$c_frame = imagecolorallocatealpha($png, 255, 0, 0, 50);
+
+# error_log("$x:$y = ".array_key_exists("$x:$y", $exp));
 
 if (array_key_exists("$x:$y", $exp))
 {
-    readfile("red256x256.png");
+    imagefilledrectangle($png, 0, 0, 255, 255, $c_bg);
+    imageline($png, 0, 0, 0, 255, $c_frame);
+    imageline($png, 0, 0, 255, 0, $c_frame);
+
+    imagepng($png);
 }
 else
 {
-    readfile("empty256x256.png");
+#    imagefilledrectangle($png, 0, 0, 255, 255, $c_bg);
+    imageline($png, 0, 0, 0, 255, $c_frame);
+    imageline($png, 0, 0, 255, 0, $c_frame);
+
+    imagepng($png);
+
 }
 
