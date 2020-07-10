@@ -75,14 +75,4 @@ print "visited: $i";
 
 exit();
 
-if (rand(0,1))
-{
-    header('Location: /red256x256.png');
-}
-else
-{
-    header('Location: /empty256x256.png');
-}
-
-exit();
 
