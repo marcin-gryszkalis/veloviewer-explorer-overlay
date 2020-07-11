@@ -18,11 +18,19 @@ if ($z < 14 || $id == 0 || !file_exists("cache/$id.php"))
 
 include("cache/$id.php");
 
+$f_t = $f_l = true;
+
+$ox = $x; # original
+$oy = $y;
+
 if ($z > 14)
 {
     $dz = $z - 14;
     $x = intval($x / (2**$dz));
-    $y = intval($y / (2**$dz));
+    $y = intval($y / (2**$dz)); 
+
+    $f_l = ($x == ($ox / (2**$dz)));
+    $f_t = ($y == ($oy / (2**$dz)));
 }
 
 $png = imagecreatefrompng("empty256x256.png");
@@ -35,18 +43,10 @@ $c_frame = imagecolorallocatealpha($png, 255, 0, 0, 50);
 if (array_key_exists("$x:$y", $exp))
 {
     imagefilledrectangle($png, 0, 0, 255, 255, $c_bg);
-    imageline($png, 0, 0, 0, 255, $c_frame);
-    imageline($png, 0, 0, 255, 0, $c_frame);
-
-    imagepng($png);
 }
-else
-{
-#    imagefilledrectangle($png, 0, 0, 255, 255, $c_bg);
-    imageline($png, 0, 0, 0, 255, $c_frame);
-    imageline($png, 0, 0, 255, 0, $c_frame);
 
-    imagepng($png);
+if ($f_l) imageline($png, 0, 0, 0, 255, $c_frame);
+if ($f_t) imageline($png, 0, 0, 255, 0, $c_frame);
 
-}
+imagepng($png);
 
