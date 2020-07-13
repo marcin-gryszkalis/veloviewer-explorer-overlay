@@ -39,7 +39,7 @@ imagesavealpha($png, true); # alpha: 0..127
 $c_bg = imagecolorallocatealpha($png, 255, 0, 0, 115); 
 $c_bg_cluster = imagecolorallocatealpha($png, 0, 0, 255, 115); 
 $c_frame = imagecolorallocatealpha($png, 255, 0, 0, 50);
-$c_frame_maxsq = imagecolorallocatealpha($png, 0, 0, 200, 30);
+$c_frame_maxsq = imagecolorallocatealpha($png, 0, 0, 200, 50);
  
 function in_cluster($x, $y, $exp)
 {
@@ -56,13 +56,35 @@ if ($z >= 14)
     
     if (array_key_exists("$x:$y", $exp))
     {
-
         imagefilledrectangle($png, 0, 0, 255, 255, in_cluster($x, $y, $exp) ? $c_bg_cluster : $c_bg);
     }
     
-    if ($f_l) imageline($png, 0, 0, 0, 255, array_key_exists("$x:$y", $maxsq_left) ? $c_frame_maxsq : $c_frame);
-    if ($f_t) imageline($png, 0, 0, 255, 0, array_key_exists("$x:$y", $maxsq_top) ? $c_frame_maxsq : $c_frame);
-    
+    if ($f_l) 
+    {
+        if (array_key_exists("$x:$y", $maxsq_left))
+        {
+            imageline($png, 0, 0, 0, 255, $c_frame_maxsq);
+            imageline($png, 1, 0, 1, 255, $c_frame_maxsq);
+        }    
+        else
+        {
+            imageline($png, 0, 0, 0, 255, $c_frame);
+        }   
+    }
+
+    if ($f_t) 
+    {
+        if (array_key_exists("$x:$y", $maxsq_top))
+        {
+            imageline($png, 0, 0, 255, 0, $c_frame_maxsq);
+            imageline($png, 0, 1, 255, 1, $c_frame_maxsq);
+        }
+        else
+        {
+            imageline($png, 0, 0, 255, 0, $c_frame);
+        }
+    }
+
 }
 elseif ($z < 14) # lower limit is checked before
 {
@@ -108,11 +130,13 @@ elseif ($z < 14) # lower limit is checked before
             if (array_key_exists("$ix:$iy", $maxsq_left))
             {
                imageline($png, $r * $jx, $r * $jy, $r * $jx, $r * $jy + $r - 1, $c_frame_maxsq);
+               imageline($png, $r * $jx + 1, $r * $jy, $r * $jx + 1, $r * $jy + $r - 1, $c_frame_maxsq);
             }
 
             if (array_key_exists("$ix:$iy", $maxsq_top))
             {
                 imageline($png, $r * $jx, $r * $jy, $r * $jx + $r - 1, $r * $jy, $c_frame_maxsq);
+                imageline($png, $r * $jx, $r * $jy + 1, $r * $jx + $r - 1, $r * $jy + 1, $c_frame_maxsq);
             }
             $jy++;      
         }
