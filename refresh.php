@@ -47,6 +47,16 @@ $response = curl_exec($curl);
 $err = curl_error($curl);
 curl_close($curl);
 
+if (preg_match("/Not authenticated/", $response))
+{
+    print("ERROR: not authenticated");
+    exit(1);    
+}
+
+$f = fopen("cache/vv-$id.php", "w");
+fwrite($f, $response);
+fclose($f);
+
 $response = preg_replace('/.*"t":\s*"([^"]+).*/','$1', $response);
 
 $parr = decode_polyline($response);
