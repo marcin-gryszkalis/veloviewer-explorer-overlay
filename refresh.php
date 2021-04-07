@@ -4,7 +4,11 @@
     # force using cache:
     $usecache = 1;
 
-    print("refreshing...<hr>\n");
+    if (!$_GET['id']) { exit(0); }
+    $id = intval($_GET['id']);
+    if ($id == 0) { exit(0); }
+
+    print("refreshing...$id<hr>\n");
 
     function decode_polyline($string)
     {
@@ -45,10 +49,6 @@
         $d = $R * $c;
         return $d;
     }
-
-    if (!$_GET['id']) { exit(0); }
-    $id = intval($_GET['id']);
-    if ($id == 0) { exit(0); }
 
     if (!$usecache)
     {
@@ -136,6 +136,8 @@
     foreach ($j2 as $n => $v)
     {
         $definite_check[$n] = 1; # to skip it during full path check
+        
+#        print("definite: $n<br>");
 
         $v = chop($v);
         $parr = decode_polyline($v);
@@ -164,69 +166,59 @@
             continue;
         }
 
+#        print("map path: $n<br>");
+
         $prevxtile = 0;
         $prevytile = 0;
 
         $v = $v['m'];
         $parr = decode_polyline($v);
+        
+        $xstack = array();
+        $ystack = array();
+
         $i = 0;
         foreach ($parr as $p)
         {
             if ($i%2 == 0)
             {
-                $x = $p;
+                array_push($xstack, $p/100000);
             }
             else
             {
-                $y = $p;
+                array_push($ystack, $p/100000);
+            }
+            $i++;
+        }
 
-                $x /= 100000;
-                $y /= 100000;
-                $xtile = floor((($y + 180) / 360) * pow(2, $zoom));
-                $ytile = floor((1 - log(tan(deg2rad($x)) + 1 / cos(deg2rad($x))) / pi()) /2 * pow(2, $zoom));
+        while (!empty($xstack))
+        {
+            $x = array_shift($xstack);
+            $y = array_shift($ystack);
 
-                $tiles["$xtile:$ytile"] = 1;
+            $xtile = floor((($y + 180) / 360) * pow(2, $zoom));
+            $ytile = floor((1 - log(tan(deg2rad($x)) + 1 / cos(deg2rad($x))) / pi()) /2 * pow(2, $zoom));
 
-                if ($prevxtile > 0 && $prevytile > 0 && (abs($prevxtile - $xtile) + abs($prevytile - $ytile)) > 1)
-                {
-                    $dx = dist_lat_lon($prevx,$y,$x,$y); # meters
-                    $dy = dist_lat_lon($x,$prevy,$x,$y);
-
-                    $dd = max($dx,$dy); # longer axis
-
-                    $ddiv = $dd / 10; # every x meters on longer axis, on shorter it's smaller step
-
-                    $sx = ($x - $prevx) / $ddiv; # step size, can be negative, can be zero
-                    $sy = ($y - $prevy) / $ddiv;
-
-                    $xx = $prevx;
-                    $yy = $prevy;
-                    $xycnt = 0;
-                    while (1)
-                    {
-                        $xx += $sx;
-                        $yy += $sy;
-                        $xycnt++;
-                        if ($xycnt > $ddiv)
-                        {
-                            break;
-                        }
-
-                        $xtile = floor((($yy + 180) / 360) * pow(2, $zoom));
-                        $ytile = floor((1 - log(tan(deg2rad($xx)) + 1 / cos(deg2rad($xx))) / pi()) /2 * pow(2, $zoom));
-
-                        $tiles["$xtile:$ytile"] = 1;
-                    }
-                }
-
+            $tiles["$xtile:$ytile"] = 1;
+             
+            if ($prevxtile == 0 || $prevytile == 0 || (abs($prevxtile - $xtile) + abs($prevytile - $ytile)) <= 1) # first tile or adjacent tile
+            {
                 $prevx = $x;
                 $prevy = $y;
-
                 $prevxtile = $xtile;
                 $prevytile = $ytile;
 
+                continue;
             }
-            $i++;
+
+            array_unshift($xstack, $x);                                       
+            array_unshift($ystack, $y);                                       
+
+            $x = $prevx + ($x - $prevx) / 2; # half way between prevx and x
+            $y = $prevy + ($y - $prevy) / 2;
+
+            array_unshift($xstack, $x);                                       
+            array_unshift($ystack, $y);                                       
         }
     }
 
