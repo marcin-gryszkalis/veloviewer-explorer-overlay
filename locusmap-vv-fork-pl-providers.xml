@@ -1,0 +1,16 @@
+<providers>
+    <provider id="448844" type="0" visible="true" required="true" background="-1">
+        <name>VeloViewer Explorer</name>
+        <mode>background</mode>
+        <url><!-- !!! Replace ###ID### with your own VeloViewer Id !!! -->
+            <![CDATA[ https://vv.fork.pl/###ID###/{z}/{x}/{y}.png ]]>
+        </url>
+        <zoomPart>{z}-8</zoomPart>
+        <zoomMin>8</zoomMin>
+        <zoomMax>24</zoomMax>
+        <tileSize>256</tileSize>
+<!--        <tileScale dpi="0" multi="2.0" replace="19"/> -->
+        <attribution><![CDATA[ https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay ]]></attribution>
+        <extraHeader>Referer#https://locusmap.eu/</extraHeader>
+    </provider>
+</providers>
