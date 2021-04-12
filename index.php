@@ -38,13 +38,15 @@ if ($id != -1) { setcookie($cookie, $id, $cookieopts); }
 <main>
   <h1>VeloViewer Explorer</h1>
   <h2>Generic Overlay</h2>
-  <h5 style=text-align:center>This theme is experimental &mdash; and not included in <code>basic.css</code></h5>
+  <h5 style=text-align:center>...</h5>
 
 <h1>BRouter</h1>
 <a href="https://brouter.de/brouter-web"></a>
 <h1>LocusMap</h1>
 <a href="https://www.locusmap.app"></a>
 
+<img src="res/brouter-ex.png">
+<img src="res/locus6.png">
   <p><strong>Lorem ipsum dolor sit amet,</strong> consectetur adipisicing elit, <em>sed do eiusmod tempor incididunt</em> ut labore et dolore magna aliqua. <u>Ut enim ad minim veniam</u>, quis nostrud exercitation ullamco <a href=#>laboris nisi ut aliquip</a> ex ea commodo consequat. Duis aute irure dolor in reprehenderit in <code>voluptate</code> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
   <blockquote>
