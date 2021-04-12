@@ -2,8 +2,8 @@
 $cookie = "vvexp_id";
 
 $id = -1;
-if ($_COOKIE[$cookie]) { $id = $_COOKIE[$cookie] }
-if ($_REQUEST[$cookie]) { $id = $_REQUEST[$cookie]; }
+if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
+if (isset($_REQUEST[$cookie])) { $id = intval($_REQUEST[$cookie]); }
 
 $cookieopts = array (
                 'expires' => time() + 60*60*24*365, // 1 year
@@ -32,21 +32,26 @@ if ($id != -1) { setcookie($cookie, $id, $cookieopts); }
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'>
   <link rel="stylesheet" href="res/style.css"><!-- based on Tommy Hodgins RFI Style https://codepen.io/tomhodgins/pen/QyvmXX -->
   <link rel="stylesheet" href="res/icons.css">
+  <link rel="stylesheet" href="res/lightbox.min.css">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 <main>
   <h1>VeloViewer Explorer</h1>
   <h2>Generic Overlay</h2>
-  <h5 style=text-align:center>...</h5>
 
-<h1>BRouter</h1>
-<a href="https://brouter.de/brouter-web"></a>
-<h1>LocusMap</h1>
-<a href="https://www.locusmap.app"></a>
+<div class="xrow">
+  <div class="xcol">
+    <h3><a href="https://brouter.de/brouter-web">BRouter Web</a></h3>
+    <a href="res/brouter-ex.png" data-lightbox="example-1" data-title="BRouter Web"><img style="height:300px" src="res/brouter-ex.png" alt="BRouter" /></a>
+  </div>
+  <div class="xcol">
+    <h3><a href="https://www.locusmap.app">Locus Map</a></h3>
+    <a href="res/locus-ex.png" data-lightbox="example-2" data-title="Locus Map 3"><img style="height:300px" src="res/locus-ex.png" alt="LocusMap"/></a>
+  </div>
+</div>
 
-<img src="res/brouter-ex.png">
-<img src="res/locus6.png">
   <p><strong>Lorem ipsum dolor sit amet,</strong> consectetur adipisicing elit, <em>sed do eiusmod tempor incididunt</em> ut labore et dolore magna aliqua. <u>Ut enim ad minim veniam</u>, quis nostrud exercitation ullamco <a href=#>laboris nisi ut aliquip</a> ex ea commodo consequat. Duis aute irure dolor in reprehenderit in <code>voluptate</code> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
   <blockquote>
@@ -98,10 +103,14 @@ if ($id != -1) { setcookie($cookie, $id, $cookieopts); }
     <a href="mailto:mg@fork.pl">mg@fork.pl</a>
   </footer>
 
+This page uses:
+https://github.com/lokesh/lightbox2
+Tommy Hodgins RFI theme https://codepen.io/tomhodgins/pen/QyvmXX
 </main>
 
 <script src='res/EQCSS.min.js'></script>
 <script src="res/script.js"></script>
+<script src="res/lightbox.min.js"></script>
 
 </body>
 </html>

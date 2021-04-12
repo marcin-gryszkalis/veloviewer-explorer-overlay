@@ -6,7 +6,7 @@ body {
 body > main {
   padding: 1.5em;
   margin: 0 auto;
-  max-width: 750px;
+  max-width: 90%;
 }
 /* RFI Theme */
 [data-theme=rfi] {
@@ -138,3 +138,21 @@ body > main {
   }
 }
 
+
+.xrow {
+  display: flex;
+}
+
+.xcol {
+  flex: 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+img {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+img:hover {
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 8px 22px 0 rgba(0, 0, 0, 0.3);
+}
