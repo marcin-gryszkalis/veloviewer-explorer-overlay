@@ -3,9 +3,7 @@
         <name>VeloViewer Explorer</name>
         <mode>VeloViewer Explorer personal tiles</mode>
         <countries>World</countries>
-        <url><!-- !!! Replace ###ID### with your own VeloViewer Id !!! -->
-            <![CDATA[ https://vv.fork.pl/###ID###/{z}/{x}/{y}.png ]]>
-        </url>
+        <url><![CDATA[https://vv.fork.pl/###ID###/{z}/{x}/{y}.png]]></url>
         <zoomPart>{z}-8</zoomPart>
         <zoomMin>8</zoomMin>
         <zoomMax>24</zoomMax>
