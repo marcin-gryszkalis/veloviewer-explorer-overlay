@@ -1,0 +1,140 @@
+body {
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+body > main {
+  padding: 1.5em;
+  margin: 0 auto;
+  max-width: 750px;
+}
+/* RFI Theme */
+[data-theme=rfi] {
+  color: #333;
+  background: #eee;
+  font-family: 'Open Sans', 'Source Sans Pro', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+}
+[data-theme=rfi] ::-moz-selection {
+  color: white;
+  text-shadow: none !important;
+  background-color: #f60 !important;
+}
+[data-theme=rfi] ::-webkit-selection {
+  color: white;
+  text-shadow: none !important;
+  background-color: #f60 !important;
+}
+[data-theme=rfi] ::selection {
+  color: white;
+  text-shadow: none !important;
+  background-color: #f60 !important;
+}
+[data-theme=rfi] body > main {
+  background: white;
+  border-top: 1px solid #ddd;
+  box-shadow: rgba(0,0,0,.05) 0 3px 3px;
+}
+[data-theme=rfi] h1,
+[data-theme=rfi] h2,
+[data-theme=rfi] h3,
+[data-theme=rfi] h4,
+[data-theme=rfi] h5,
+[data-theme=rfi] h6 {
+  color: #111;
+  letter-spacing: -.04em;
+  font-family: 'Open Sans', 'Myriad Pro', Myriad, 'Segoe UI', 'Source Sans Pro', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+}
+[data-theme=rfi] h1 {
+  color: black;
+  font-size: 325%;
+  letter-spacing: -.05em;
+  text-shadow: none;
+  position: relative;
+  z-index: 50;
+}
+[data-theme=rfi] h1 + h2 {
+  margin-top: -.75em;
+  color: #999;
+  font-weight: 400;
+}
+[data-theme=rfi] code {
+  color: #333;
+  background: #eee;
+  font-weight: 400;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  text-shadow: none;
+  box-shadow: none;
+  position: relative;
+  z-index: 0;
+}
+[data-theme=rfi] pre {
+  color: #333;
+  background: #eee;
+  border: 1px solid #ccc;
+}
+[data-theme=rfi] blockquote {
+  color: #999;
+  letter-spacing: -.02em;
+}
+[data-theme=rfi] blockquote p {
+  color: #f60;
+  font-weight: 700;
+  font-family: 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+}
+[data-theme=rfi] blockquote footer {
+  color: #777;
+}
+[data-theme=rfi] a {
+  color: #f60;
+  font-weight: 500;
+  text-shadow: inherit;
+}
+[data-theme=rfi] a:focus,
+[data-theme=rfi] a:hover {
+  color: #fc0;
+  text-decoration: underline;
+}
+[data-theme=rfi] hr {
+  background: #fc0;
+}
+[data-theme=rfi] footer {
+  color: #999;
+}
+[data-theme=rfi] form select,
+[data-theme=rfi] form .split-input > input,
+[data-theme=rfi] form .split-input > select,
+[data-theme=rfi] form [type="text"],
+[data-theme=rfi] form [type="tel"],
+[data-theme=rfi] form [type^="cc-"],
+[data-theme=rfi] form [type="email"] {
+  border-color: #ccc;
+  font-family: 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+  box-shadow: rgba(0,0,0,.15) 0 1px 1px;
+}
+[data-theme=rfi] form select:focus,
+[data-theme=rfi] form .split-input > input:focus,
+[data-theme=rfi] form .split-input > select:focus,
+[data-theme=rfi] form [type="text"]:focus,
+[data-theme=rfi] form [type="tel"]:focus,
+[data-theme=rfi] form [type^="cc-"]:focus,
+[data-theme=rfi] form [type="email"]:focus {
+  border-color: orange;
+  box-shadow: #fc0 0 0 3px;
+}
+[data-modal] article [data-theme=rfi] {
+  background: white;
+}
+@media (min-width: 750px) {
+  [data-theme=rfi] main > p {
+    font-size: 12pt;
+  }
+}
+@media (min-width: 750px) {
+  [data-theme=rfi] body > main {
+    margin: 3em auto;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+  }
+}
+
