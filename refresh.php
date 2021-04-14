@@ -11,6 +11,7 @@ if (isset($_REQUEST[$cookie])) { $id = intval($_REQUEST[$cookie]); }
 if ($id <= -1)
 {
     header("Location: index.php");
+    exit(0);
 }
 
 $output = "";
