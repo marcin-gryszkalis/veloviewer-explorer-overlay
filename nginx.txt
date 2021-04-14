@@ -1,3 +1,7 @@
 rewrite  ^/(\d+)/(\d+)/(\d+)/(\d+).png$  /tile.php?id=$1&z=$2&x=$3&y=$4 last;
 rewrite  ^/(\d+)/(\d+)/(\d+)/(\d+)/(\d+).png$  /tile.php?id=$1&color=$2&z=$3&x=$4&y=$5 last;
 add_header locus_disable_download_limit true;
+location ^~ /cache/ {
+    deny all;
+    return 403;
+}
