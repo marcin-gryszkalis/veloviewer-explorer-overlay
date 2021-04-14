@@ -1,6 +1,9 @@
 # VeloViewer Explorer Overlay tile-server
 Generic overlay for VeloViewer Explorer squares
 
+## Public server
+  I set up open public server with this service, check at https://vv.fork.pl/
+  
 ## Explorer info:
 - https://blog.veloviewer.com/veloviewer-explorer-score-and-max-square/
 - https://rideeverytile.com/
