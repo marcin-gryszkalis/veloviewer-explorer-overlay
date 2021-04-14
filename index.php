@@ -1,4 +1,6 @@
 <?
+include("lib.php");
+
 $cookie = "vvexp_id";
 
 $id = -1;
@@ -14,7 +16,7 @@ $cookieopts = array (
                 'samesite' => 'Strict'
                 );
 
-if ($id != -1) { setcookie($cookie, $id, $cookieopts); }
+if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
 
 ?><!DOCTYPE html>
 <html lang="en" >
@@ -52,50 +54,131 @@ if ($id != -1) { setcookie($cookie, $id, $cookieopts); }
   </div>
 </div>
 
-  <p><strong>Lorem ipsum dolor sit amet,</strong> consectetur adipisicing elit, <em>sed do eiusmod tempor incididunt</em> ut labore et dolore magna aliqua. <u>Ut enim ad minim veniam</u>, quis nostrud exercitation ullamco <a href=#>laboris nisi ut aliquip</a> ex ea commodo consequat. Duis aute irure dolor in reprehenderit in <code>voluptate</code> velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<hr>
+<h3>VeloViewer ID</h3>
+<p>You can find your VeloViewer ID in URL bar at <a href="https://veloviewer.com/">veloviewer.com</a> - it's the number behind /athlete/.</p>
 
+<form action="index.php" method="post">
+<input type="text" name="vvexp_id" data-button=outline value="<?=$id > -1 ? $id : "not set" ?>">
+<input type="submit" value="Save" data-button>
+</form>
+
+<h3>Refresh your data</h3>
+<? 
+if ($id > -1 && file_exists("cache/$id.php")) 
+{ 
+    $ft = filemtime("cache/$id.php");
+    $ago = human_time_diff(time(), $ft);
+?>
+    <p>Your data was refreshed <?=$ago ?> ago</p>
+<?
+}
+?>
+
+<a href="refresh.php" data-button>Refresh Explorer Stats</a>
+
+<p><em>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</em></p>
+<p><em>Refreshing may take several seconds or even minutes</em></p>
+
+
+<h3>Overlay tile map URL</h3>
+<?
+
+if ($id > -1) 
+{
+    $url = "https://".$_SERVER['HTTP_HOST']."/".$id."/{z}/{x}/{y}.png";
+    ?>
+
+    <p><code><?=$url ?></code></p>
+
+    <?
+}
+else
+{
+    ?>
+    You have to setup your VeloViewer ID.
+    <?
+}
+?>
+
+<hr>
+<h3>Setup BRouter Web</h3>
+<p>BRouter Planner web interface: <a href="https://brouter.de/brouter-web">https://brouter.de/brouter-web</a></p>
+
+<h4>Step 1 - choose <strong>Custom Layers</strong></h4>
+<a href="res/brouter1.png" data-lightbox="br1" data-title="BRouter Web setup 1"><img style="height:300px" src="res/brouter1.png" alt="BRouter" /></a>
+<h4>Step 2 - Fill the <strong>Customize Layers form</strong></h4>
+<ol>
+<li>Name of the layer
+<li>Layer URL (with your VeloViewer ID) <code><?=$url ?></code>
+<li>Add overlay
+</ol>
+<a href="res/brouter2.png" data-lightbox="br2" data-title="BRouter Web setup 2"><img style="height:300px" src="res/brouter2.png" alt="BRouter" /></a>
+<h4>Step 3 - Enable the layer</h4>
+<a href="res/brouter3.png" data-lightbox="br3" data-title="BRouter Web setup 3"><img style="height:300px" src="res/brouter3.png" alt="BRouter" /></a>
+
+
+<hr>
+<h3>Setup Locus Map</h3>
+<p>LocusMap Application: <a href="https://www.locusmap.app">https://www.locusmap.app</a></p>
+<h4>Step 1. Install Locus Map</h4>
+Install Locus Map on your smartphone, note - the overlay was tested with LocusMap App version 3 (pro).
+<h4>Step 2. Get providers.xml</h4>
+<p><a href="providers.php">Click here to download your personal providers.xml file to be used in Locus Map</a></p>
+<h4>Step 3. Upload providers.xml to smartphone</h4>
+<p>It should be in <code>Internal Storage / Locus / mapsOnline / custom</code> directory.</p>
+<br>
+<a href="res/locus1.png" data-lightbox="br1" data-title="Locus setup 1"><img style="height:300px" src="res/locus1.png" alt="LocusMap" /></a>
+
+<h4>Step 4. Verify it's recognized</h4>
+<p>In Map Manager it should be visible under the name of <em>VeloViewer Explorer Personal Overlay</em> in the <em>World</em> category</p> 
+<a href="res/locus2.png" data-lightbox="br2" data-title="Locus setup 2"><img style="height:300px" src="res/locus2.png" alt="LocusMap" /></a>
+
+<h4>Step 5. Map Overlays</h4>
+<p>Go to <em>More Functions</em> / <em>Map Overlays</em></p>
+<a href="res/locus3.png" data-lightbox="br3" data-title="Locus setup 3"><img style="height:300px" src="res/locus3.png" alt="LocusMap" /></a>
+
+<h4>Step 6. Set Overlay</h4>
+<p>Enable Overlay, choose <em>Set</em>, <em>Select Online Map</em> and then select <em>VeloViewer Explorer Overlay</em></p>
+<a href="res/locus4.png" data-lightbox="br4" data-title="Locus setup 4"><img style="height:300px" src="res/locus4.png" alt="LocusMap" /></a>
+<a href="res/locus5.png" data-lightbox="br5" data-title="Locus setup 5"><img style="height:300px" src="res/locus5.png" alt="LocusMap" /></a>
+
+<h4>Step 7. Have fun</h4>
+<p>The overlay should be immediately visible</p>
+<a href="res/locus6.png" data-lightbox="br6" data-title="Locus setup 6"><img style="height:300px" src="res/locus6.png" alt="LocusMap" /></a>
+<a href="res/locus7.png" data-lightbox="br7" data-title="Locus setup 7"><img style="height:300px" src="res/locus7.png" alt="LocusMap" /></a>
+<a href="res/locus8.png" data-lightbox="br8" data-title="Locus setup 8"><img style="height:300px" src="res/locus8.png" alt="LocusMap" /></a>
+<a href="res/locus9.png" data-lightbox="br9" data-title="Locus setup 9"><img style="height:300px" src="res/locus9.png" alt="LocusMap" /></a>
+
+<h4>Step 8. Cache</h4>
+<p>You can clear Locus Map cache of Explorer Overlay (in case you uploaded new tracks to Strava, updated VeloViewer and refreshed data here (the <em>Refresh Explorer stats</em> button)</p>
+<a href="res/locus0.png" data-lightbox="br0" data-title="Locus setup 0"><img style="height:300px" src="res/locus0.png" alt="LocusMap" /></a>
+
+<hr>
+<h3>Problems?</h3>
+<p>If you have any problems please report an issue at <a href="https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues">https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues</a></p>
+
+<hr>
+
+<!--
   <blockquote>
     <p><q>This is a blockquote</q></p>
     <footer>First Last</footer>
   </blockquote>
-
-  <h2>List Test</h2>
-  <ul>
-    <li>list item
-    <li>list item with <a href=#>a link</a>
-    <li>list item
-  </ul>
-  <ol>
-    <li>list item
-    <li>list item with <a href=#>a link</a>
-    <li>list item
-  </ol>
-  <h4>Button Test</h4>
-  <a href=# data-button>default button</a>
-  <a href=# data-button="blue">.blue button</a>
-  <a href=# data-button="green">.green button</a>
-  <a href=# data-button="red">.red button</a>
-  <a href=# data-button="grey">.grey button</a>
-  <a href=# data-button="outline">.outline button</a>
-  <br>
-  <a href=# data-button disabled>default button</a>
-  <a href=# data-button="blue" class="disabled">.blue button</a>
-  <a href=# data-button="green" hidden>.green button</a>
-  <a href=# data-button="red" disabled>.red button</a>
-  <a href=# data-button="grey" class="disabled">.grey button</a>
-  <a href=# data-button="outline" hidden>.outline button</a>
   <pre>&lt;script>alert('I LOVE ALERTS!')&lt;/script></pre>
-  <h1>This is an &lt;H1&gt; Headline</h1>
-  <hr>
-  <h2>This is an &lt;H2&gt; Headline</h2>
-  <h3>This is an &lt;H3&gt; Headline</h3>
-  <h4>This is an &lt;H4&gt; Headline</h4>
-  <h5>This is an &lt;H5&gt; Headline</h5>
-  <h6>This is an &lt;H6&gt; Headline</h6>
   <p><img class=float-left style=width:100px src=//>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   <p><img class=float-right style=width:100px src=//staticresource.com/user.png>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   <p><img class=float-none src=//staticresource.com/user.png></p>
   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+-->
+    <h3>Credits</h3>
+<p>This page uses:</p>
+<ul>
+<li>LightBox2 - <a href="https://github.com/lokesh/lightbox2">https://github.com/lokesh/lightbox2</a>
+<li>Tommy Hodgins RFI theme - <a href="https://codepen.io/tomhodgins/pen/QyvmXX">https://codepen.io/tomhodgins/pen/QyvmXX</a>
+</ul>
+
   <footer>
     <span class="material-icons md-18 md-dark">source</span>
     <a href="https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay">Github</a> |
@@ -103,9 +186,6 @@ if ($id != -1) { setcookie($cookie, $id, $cookieopts); }
     <a href="mailto:mg@fork.pl">mg@fork.pl</a>
   </footer>
 
-This page uses:
-https://github.com/lokesh/lightbox2
-Tommy Hodgins RFI theme https://codepen.io/tomhodgins/pen/QyvmXX
 </main>
 
 <script src='res/EQCSS.min.js'></script>

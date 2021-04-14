@@ -2,7 +2,7 @@
 # refresh list of visited squares for given id
 
     # force using cache:
-    $usecache = 1;
+#    $usecache = 1;
 
     if (!$_GET['id']) { exit(0); }
     $id = intval($_GET['id']);
