@@ -59,29 +59,35 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
 <p>You can find your VeloViewer ID in URL bar at <a href="https://veloviewer.com/">veloviewer.com</a> - it's the number behind /athlete/.</p>
 
 <form action="index.php" method="post">
-<input type="text" name="vvexp_id" data-button=outline value="<?=$id > -1 ? $id : "not set" ?>">
+<input type="text" name="vvexp_id" onfocus="if (this.value=='not set') { this.value='' }" data-button=outline value="<?=$id > -1 ? $id : "not set" ?>">
 <input type="submit" value="Save" data-button>
 </form>
 
-<h3>Refresh your data</h3>
+<hr>
+<h3>Explorer Stats</h3>
 <? 
 if ($id > -1 && file_exists("cache/$id.php")) 
 { 
     $ft = filemtime("cache/$id.php");
     $ago = human_time_diff(time(), $ft);
+
+    include("cache/stats-$id.php");
 ?>
     <p>Your data was refreshed <?=$ago ?> ago</p>
+    <p>Visited Tiles: <?=$stats_tiles ?></p>
+    <p>Max Square: <?=$stats_maxsquare ?>x<?=$stats_maxsquare ?></p>
 <?
 }
 ?>
 
 <a href="refresh.php" data-button>Refresh Explorer Stats</a>
 
-<p><em>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</em></p>
-<p><em>Refreshing may take several seconds or even minutes</em></p>
+<p>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</p>
+<p>Refreshing may take several seconds or even minutes.</p>
 
-
+<hr>
 <h3>Overlay tile map URL</h3>
+<p>You can use this overlay in any system that supports standard tile servers</p>
 <?
 
 if ($id > -1) 
@@ -95,6 +101,7 @@ if ($id > -1)
 }
 else
 {
+    $url = "*** setup VeloViewer ID first ***";
     ?>
     You have to setup your VeloViewer ID.
     <?
@@ -126,7 +133,7 @@ Install Locus Map on your smartphone, note - the overlay was tested with LocusMa
 <h4>Step 2. Get providers.xml</h4>
 <p><a href="providers.php">Click here to download your personal providers.xml file to be used in Locus Map</a></p>
 <h4>Step 3. Upload providers.xml to smartphone</h4>
-<p>It should be in <code>Internal Storage / Locus / mapsOnline / custom</code> directory.</p>
+<p>It should be stored in <code>Internal Storage / Locus / mapsOnline / custom</code> directory.</p>
 <br>
 <a href="res/locus1.png" data-lightbox="br1" data-title="Locus setup 1"><img style="height:300px" src="res/locus1.png" alt="LocusMap" /></a>
 
@@ -151,7 +158,7 @@ Install Locus Map on your smartphone, note - the overlay was tested with LocusMa
 <a href="res/locus9.png" data-lightbox="br9" data-title="Locus setup 9"><img style="height:300px" src="res/locus9.png" alt="LocusMap" /></a>
 
 <h4>Step 8. Cache</h4>
-<p>You can clear Locus Map cache of Explorer Overlay (in case you uploaded new tracks to Strava, updated VeloViewer and refreshed data here (the <em>Refresh Explorer stats</em> button)</p>
+<p>You can clear Locus Map cache of Explorer Overlay in case you uploaded new tracks to Strava, updated VeloViewer and refreshed data here (the <em>Refresh Explorer stats</em> button)</p>
 <a href="res/locus0.png" data-lightbox="br0" data-title="Locus setup 0"><img style="height:300px" src="res/locus0.png" alt="LocusMap" /></a>
 
 <hr>

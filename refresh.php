@@ -1,14 +1,22 @@
 <?php
 # refresh list of visited squares for given id
 
+$cookie = "vvexp_id";
+
+$id = -1;
+if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
+# allow overwrite in request
+if (isset($_REQUEST[$cookie])) { $id = intval($_REQUEST[$cookie]); } 
+
+if ($id <= -1)
+{
+    header("Location: index.php");
+}
+
+$output = "";
+
     # force using cache:
-#    $usecache = 1;
-
-    if (!$_GET['id']) { exit(0); }
-    $id = intval($_GET['id']);
-    if ($id == 0) { exit(0); }
-
-    print("refreshing...$id<hr>\n");
+    $usecache = 0;
 
     function decode_polyline($string)
     {
@@ -63,13 +71,11 @@
         $response = curl_exec($curl);
         $err = curl_error($curl);
 
-        $f = fopen("cache/vv1-$id.php", "w");
-        fwrite($f, $response);
-        fclose($f);
+        file_put_contents("cache/vv1-$id.html", $response);
     }
     else
     {
-        $response = file_get_contents("cache/vv1-$id.php");
+        $response = file_get_contents("cache/vv1-$id.html");
     }
 
     if (preg_match("/Not authenticated/", $response))
@@ -117,13 +123,13 @@
         curl_close($curl);
 
 
-        file_put_contents("cache/vv2-$id.php", $response1);
-        file_put_contents("cache/vv3-$id.php", $response2);
+        file_put_contents("cache/vv2-$id.html", $response1);
+        file_put_contents("cache/vv3-$id.html", $response2);
     }
     else
     {
-        $response1 = file_get_contents("cache/vv2-$id.php");
-        $response2 = file_get_contents("cache/vv3-$id.php");
+        $response1 = file_get_contents("cache/vv2-$id.html");
+        $response2 = file_get_contents("cache/vv3-$id.html");
     }
 
     $response = preg_replace('/mapsLoaded.(.*)./','$1', $response1);
@@ -228,7 +234,8 @@
     fwrite($f, ";\n");
     fclose($f);
 
-    print("tile count: ".count($tiles)."<hr>");
+    # print("tile count: ".count($tiles)."<hr>");
+    $output .= '$stats_tiles = '.count($tiles).";\n";
 
     # calculate max square
     $max = 0;
@@ -271,11 +278,13 @@
 
     }
 
+    $output .= '$stats_maxsquare = '.$max.";\n";
+
     foreach (array_keys($maxes) as $m)
     {
         if ($maxes[$m] == $max)
         {
-            print "max square: $max x $max -- $m<br>\n";
+            # print "max square: $max x $max -- $m<br>\n";
 
             $a = explode(":", $m);
             $x = $a[0];
@@ -303,4 +312,8 @@
     fwrite($f, ";\n");
     fclose($f);
 
+    $f = fopen("cache/stats-$id.php", "w");
+    fwrite($f, "<?\n$output");
+    fclose($f);
 
+    header("Location: index.php");
