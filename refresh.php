@@ -6,7 +6,8 @@ $cookie = "vvexp_id";
 $id = -1;
 if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
 # allow overwrite in request
-if (isset($_REQUEST[$cookie])) { $id = intval($_REQUEST[$cookie]); }
+if (isset($_POST[$cookie])) { $id = intval($_POST[$cookie]); }
+if (isset($_GET[$cookie])) { $id = intval($_GET[$cookie]); }
 
 if ($id <= -1)
 {
