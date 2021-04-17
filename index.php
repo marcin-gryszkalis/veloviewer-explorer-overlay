@@ -25,6 +25,8 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
   <title>VeloViewer Explorer Generic Overlay</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="icon" href="/res/favicon.png">
+
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700,300italic,400italic,500italic,700italic'>
   <link rel='stylesheet' href='res/basic.css'>
   <link rel='stylesheet' href='res/data-buttons.css'>
