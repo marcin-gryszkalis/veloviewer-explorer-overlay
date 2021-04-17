@@ -5,7 +5,7 @@ $cookie = "vvexp_id";
 
 $id = -1;
 if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
-if (isset($_REQUEST[$cookie])) { $id = intval($_REQUEST[$cookie]); }
+if (isset($_POST[$cookie])) { $id = intval($_POST[$cookie]); }
 
 $cookieopts = array (
     'expires' => time() + 60*60*24*365, // 1 year
