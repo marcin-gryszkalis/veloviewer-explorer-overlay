@@ -15,11 +15,23 @@ if ($id <= -1)
     exit(0);
 }
 
-$output = "";
+$debug = false;
+if (isset($_GET['dbg_activity']))
+{
+    $dbg_activity = $_GET['dbg_activity'];
+    $debug = true;
+    print "<pre>\n";
+}
 
 # force using cache:
 $usecache = 0;
-if (isset($_REQUEST['usecache'])) { $usecache = 1; }
+if (isset($_REQUEST['usecache']))
+{
+    $usecache = 1;
+}
+
+
+$output = "";
 
 function decode_polyline($string)
 {
@@ -135,10 +147,10 @@ else
     $response2 = file_get_contents("cache/vv3-$id.html");
 }
 
-$response = preg_replace('/mapsLoaded.(.*)./','$1', $response1);
+$response = preg_replace('/mapsLoaded.(.*)./', '$1', $response1);
 $j1 = json_decode($response, true);
 
-$response = preg_replace('/explorerLoaded.(.*)./','$1', $response2);
+$response = preg_replace('/explorerLoaded.(.*)./', '$1', $response2);
 $j2 = json_decode($response, true);
 
 # parse explorer paths (so called "definite" set)
@@ -146,7 +158,16 @@ foreach ($j2 as $n => $v)
 {
     $definite_check[$n] = 1; # to skip it during full path check
 
+    if ($debug && isset($dbg_activity))
+    {
+        if ($n != $dbg_activity)
+        {
+            continue;
+        }
+    }
+
     $v = chop($v);
+
     $parr = decode_polyline($v);
     $i = 0;
     foreach ($parr as $p)
@@ -173,25 +194,46 @@ foreach ($j1 as $n => $v)
         continue;
     }
 
+    $v = $v['m'];
+    $v = preg_replace('/},{/', '}{', $v); # https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues/1
+
+    if ($debug && isset($dbg_activity))
+    {
+        if ($n != $dbg_activity)
+        {
+            continue;
+        }
+
+        print_r($v);
+    }
+
     $prevxtile = 0;
     $prevytile = 0;
 
-    $v = $v['m'];
     $parr = decode_polyline($v);
 
     $xstack = array();
     $ystack = array();
 
     $i = 0;
+    $x = 0;
+    $y = 0;
     foreach ($parr as $p)
     {
         if ($i%2 == 0)
         {
-            array_push($xstack, $p/100000);
+            $x = $p/100000;
+            array_push($xstack, $x);
         }
         else
         {
-            array_push($ystack, $p/100000);
+            $y = $p/100000;
+            array_push($ystack, $y);
+
+            if ($debug)
+            {
+                print "A ($x,$y)\n";
+            }
         }
         $i++;
     }
@@ -200,6 +242,11 @@ foreach ($j1 as $n => $v)
     {
         $x = array_shift($xstack);
         $y = array_shift($ystack);
+
+        if ($debug)
+        {
+            print "($x,$y)\n";
+        }
 
         $xtile = floor((($y + 180) / 360) * pow(2, $zoom));
         $ytile = floor((1 - log(tan(deg2rad($x)) + 1 / cos(deg2rad($x))) / pi()) /2 * pow(2, $zoom));
@@ -219,12 +266,29 @@ foreach ($j1 as $n => $v)
         array_unshift($xstack, $x);
         array_unshift($ystack, $y);
 
+        if ($debug)
+        {
+            print "U1 ($x,$y)\n";
+        }
+
+
         $x = $prevx + ($x - $prevx) / 2; # half way between prevx and x
         $y = $prevy + ($y - $prevy) / 2;
 
         array_unshift($xstack, $x);
         array_unshift($ystack, $y);
-    }
+        if ($debug)
+        {
+            print "U2 ($x,$y)\n";
+        }
+
+   }
+}
+
+if ($debug)
+{
+    print_r($tiles);
+    $id="9999999999"; # debug id 10x9
 }
 
 file_put_contents("cache/$id.php", '<?php $exp = '.var_export($tiles, true).";\n");
