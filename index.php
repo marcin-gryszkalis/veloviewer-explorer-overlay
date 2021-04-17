@@ -13,7 +13,7 @@ $cookieopts = array (
     'domain' => $_SERVER['HTTP_HOST'],
     'secure' => true,
     'httponly' => true,
-    'samesite' => 'Strict'
+    'samesite' => 'Lax'
     );
 
 if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
@@ -59,7 +59,7 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
 <p>You can find your VeloViewer ID in URL bar at <a href="https://veloviewer.com/">veloviewer.com</a> - it's the number behind /athlete/.</p>
 
 <form action="index.php" method="post">
-<input type="text" name="vvexp_id" onfocus="if (this.value=='not set') { this.value='' }" data-button=outline value="<?=$id > -1 ? $id : "not set" ?>">
+<input type="text" name="vvexp_id" class="textinput" onfocus="if (this.value=='not set') { this.value='' }" value="<?=$id > -1 ? $id : "not set" ?>">
 <input type="submit" value="Save" data-button>
 </form>
 

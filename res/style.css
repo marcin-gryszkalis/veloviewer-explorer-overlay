@@ -157,9 +157,45 @@ img:hover {
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 8px 22px 0 rgba(0, 0, 0, 0.3);
 }
 
+.textinput {
+border-color: #ccc;
+font-family: 'Source Sans Pro', 'Open Sans', Roboto, 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Myriad Pro', 'Segoe UI', Myriad, Helvetica, 'Lucida Grande', 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, Arial, sans-serif;
+font-size: 16px;
+font-weight: 400;
+color: rgb(51, 51, 51);
+
+border-color: rgb(204, 204, 204);
+border-radius: 3px;
+border-style: solid;
+border-width: 1px;
+
+box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 1px 0px;
+box-sizing: border-box;
+
+line-height: 18px;
+
+margin-bottom: 8px;
+margin-left: 0px;
+margin-right: 0px;
+margin-top: 8px;
+padding-bottom: 6px;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 6px;
+
+text-align: center;
+text-decoration: rgb(51, 51, 51);
+text-decoration-color: rgb(51, 51, 51);
+text-decoration-style: solid;
+text-shadow: none;
+
+vertical-align: baseline;
+}
+
 .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}
 @keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}
 @media (max-width:500px) {
-  .github-corner:hover .octo-arm{animation:none}
-  .github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}
-}
+.github-corner:hover .octo-arm{animation:none}
+.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}
+
+
