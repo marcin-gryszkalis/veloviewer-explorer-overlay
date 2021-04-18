@@ -54,6 +54,10 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
     <h3><a href="https://www.locusmap.app">Locus Map</a></h3>
     <a href="res/locus-ex.png" data-lightbox="example-2" data-title="Locus Map 3"><img style="height:300px" src="res/locus-ex.png" alt="LocusMap"/></a>
   </div>
+  <div class="xcol">
+    <h3><a href="https://osmand.net">OsmAnd</a></h3>
+    <a href="res/osmand-ex.png" data-lightbox="example-3" data-title="OsmAnd"><img style="height:300px" src="res/osmand-ex.png" alt="OsmAnd"/></a>
+  </div>
 </div>
 
 <hr>
@@ -142,31 +146,70 @@ else
   <h4>Step 3. Upload providers.xml to smartphone</h4>
   <p>It should be stored in <code>Internal Storage / Locus / mapsOnline / custom</code> directory.</p>
   <br>
-  <a href="res/locus1.png" data-lightbox="br1" data-title="Locus setup 1"><img style="height:300px" src="res/locus1.png" alt="LocusMap" /></a>
+  <a href="res/locus1.png" data-lightbox="lm1" data-title="Locus setup 1"><img style="height:300px" src="res/locus1.png" alt="LocusMap" /></a>
 
   <h4>Step 4. Verify it's recognized</h4>
   <p>In Map Manager it should be visible under the name of <em>VeloViewer Explorer Personal Overlay</em> in the <em>World</em> category</p>
-  <a href="res/locus2.png" data-lightbox="br2" data-title="Locus setup 2"><img style="height:300px" src="res/locus2.png" alt="LocusMap" /></a>
+  <a href="res/locus2.png" data-lightbox="lm2" data-title="Locus setup 2"><img style="height:300px" src="res/locus2.png" alt="LocusMap" /></a>
 
   <h4>Step 5. Map Overlays</h4>
   <p>Go to <em>More Functions</em> / <em>Map Overlays</em></p>
-  <a href="res/locus3.png" data-lightbox="br3" data-title="Locus setup 3"><img style="height:300px" src="res/locus3.png" alt="LocusMap" /></a>
+  <a href="res/locus3.png" data-lightbox="lm3" data-title="Locus setup 3"><img style="height:300px" src="res/locus3.png" alt="LocusMap" /></a>
 
   <h4>Step 6. Set Overlay</h4>
   <p>Enable Overlay, choose <em>Set</em>, <em>Select Online Map</em> and then select <em>VeloViewer Explorer Overlay</em></p>
-  <a href="res/locus4.png" data-lightbox="br4" data-title="Locus setup 4"><img style="height:300px" src="res/locus4.png" alt="LocusMap" /></a>
-  <a href="res/locus5.png" data-lightbox="br5" data-title="Locus setup 5"><img style="height:300px" src="res/locus5.png" alt="LocusMap" /></a>
+  <a href="res/locus4.png" data-lightbox="lm4" data-title="Locus setup 4"><img style="height:300px" src="res/locus4.png" alt="LocusMap" /></a>
+  <a href="res/locus5.png" data-lightbox="lm5" data-title="Locus setup 5"><img style="height:300px" src="res/locus5.png" alt="LocusMap" /></a>
 
   <h4>Step 7. Have fun</h4>
   <p>The overlay should be immediately visible</p>
-  <a href="res/locus6.png" data-lightbox="br6" data-title="Locus setup 6"><img style="height:300px" src="res/locus6.png" alt="LocusMap" /></a>
-  <a href="res/locus7.png" data-lightbox="br7" data-title="Locus setup 7"><img style="height:300px" src="res/locus7.png" alt="LocusMap" /></a>
-  <a href="res/locus8.png" data-lightbox="br8" data-title="Locus setup 8"><img style="height:300px" src="res/locus8.png" alt="LocusMap" /></a>
-  <a href="res/locus9.png" data-lightbox="br9" data-title="Locus setup 9"><img style="height:300px" src="res/locus9.png" alt="LocusMap" /></a>
+  <a href="res/locus6.png" data-lightbox="lm6" data-title="Locus setup 6"><img style="height:300px" src="res/locus6.png" alt="LocusMap" /></a>
+  <a href="res/locus7.png" data-lightbox="lm7" data-title="Locus setup 7"><img style="height:300px" src="res/locus7.png" alt="LocusMap" /></a>
+  <a href="res/locus8.png" data-lightbox="lm8" data-title="Locus setup 8"><img style="height:300px" src="res/locus8.png" alt="LocusMap" /></a>
+  <a href="res/locus9.png" data-lightbox="lm9" data-title="Locus setup 9"><img style="height:300px" src="res/locus9.png" alt="LocusMap" /></a>
 
   <h4>Step 8. Cache</h4>
   <p>You can clear Locus Map cache of Explorer Overlay in case you uploaded new tracks to Strava, updated VeloViewer and refreshed data here (the <em>Refresh Explorer stats</em> button)</p>
-  <a href="res/locus0.png" data-lightbox="br0" data-title="Locus setup 0"><img style="height:300px" src="res/locus0.png" alt="LocusMap" /></a>
+  <a href="res/locus0.png" data-lightbox="lm0" data-title="Locus setup 0"><img style="height:300px" src="res/locus0.png" alt="LocusMap" /></a>
+
+<hr>
+<h3>Setup OsmAnd</h3>
+  <p>OsmAnd Application: <a href="https://osmand.net">https://osmand.net</a></p>
+
+  <h4>Step 1. Install OsmAnd</h4>
+  Install OsmAnd on your smartphone. Tested with OsmAnd+ 3.9.10
+
+  <h4>Step 2. Enable <em>Online Maps plugin</em></h4>
+  <a href="res/osmand01.png" data-lightbox="os1" data-title="OsmAnd setup 1"><img style="height:300px" src="res/osmand01.png" alt="OsmAnd" /></a>
+
+  <h4>Step 3. Add new Map Source</h4>
+  <p>In <em>Configure Map</em> menu theres <em>Map Source</em> - select it and then choose <em>Add</em></p>
+  <br>
+  <a href="res/osmand02.png" data-lightbox="br2" data-title="OsmAnd setup 2"><img style="height:300px" src="res/osmand02.png" alt="OsmAnd" /></a>
+  <a href="res/osmand03.png" data-lightbox="br3" data-title="OsmAnd setup 3"><img style="height:300px" src="res/osmand03.png" alt="OsmAnd" /></a>
+
+  <h4>Step 4. Setup Overlay - fill the form</h4>
+  <ol>
+    <li>Name of the source
+    <li>Layer URL (with your VeloViewer ID) <code><?=$url ?></code>
+    <li>Save
+  </ol>
+  <a href="res/osmand04.png" data-lightbox="br4" data-title="OsmAnd setup 4"><img style="height:300px" src="res/osmand04.png" alt="OsmAnd" /></a>
+
+  <h4>Step 5. Enable Overlay</h4>
+  <p>Go to <em>Configure Map</em> / <em>Overlay Map</em></p>
+  <a href="res/osmand05.png" data-lightbox="br5" data-title="OsmAnd setup 5"><img style="height:300px" src="res/osmand05.png" alt="OsmAnd" /></a>
+
+  <h4>Step 6. Choose Overlay</h4>
+  <p>Choose <em>VeloViewer Explorer</em> you added on Step 4. You can set <em>transparency</em> to the max, because Overlay is already served as transparent (you will be able to make it even less visible with <em>tranparency seekbar</em> (if you choose to enable it).</p>
+  <a href="res/osmand06.png" data-lightbox="br6" data-title="OsmAnd setup 6"><img style="height:300px" src="res/osmand06.png" alt="OsmAnd" /></a>
+  <a href="res/osmand07.png" data-lightbox="br7" data-title="OsmAnd setup 7"><img style="height:300px" src="res/osmand07.png" alt="OsmAnd" /></a>
+
+  <h4>Step 7. Have fun</h4>
+  <p>The overlay should be immediately visible</p>
+  <a href="res/osmand08.png" data-lightbox="br8" data-title="OsmAnd setup 8"><img style="height:300px" src="res/osmand08.png" alt="OsmAnd" /></a>
+  <a href="res/osmand09.png" data-lightbox="br9" data-title="OsmAnd setup 9"><img style="height:300px" src="res/osmand09.png" alt="OsmAnd" /></a>
+  <a href="res/osmand10.png" data-lightbox="br10" data-title="OsmAnd setup 10"><img style="height:300px" src="res/osmand10.png" alt="OsmAnd" /></a>
 
 <hr>
 <h3>Problems?</h3>
