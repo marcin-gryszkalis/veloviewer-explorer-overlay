@@ -99,9 +99,10 @@ if ($id > -1 && file_exists("cache/$id.php"))
 if ($id > -1)
 {
     $url = "https://".$_SERVER['HTTP_HOST']."/".$id."/{z}/{x}/{y}.png";
+    $alturl = "https://".$_SERVER['HTTP_HOST']."/".$id."/{0}/{1}/{2}.png";
     ?>
-
-    <p><code><?=$url ?></code></p>
+    <input type="hidden" id="vvexp_url" name="vvexp_url" value="<?=$url ?>">
+    <p><code><?=$url ?></code></p> 
 
     <?
 }
@@ -177,7 +178,7 @@ else
   <p>OsmAnd Application: <a href="https://osmand.net">https://osmand.net</a></p>
 
   <h4>Step 1. Install OsmAnd</h4>
-  Install OsmAnd on your smartphone. Tested with OsmAnd+ 3.9.10
+  Install OsmAnd on your smartphone. Tested with OsmAnd+ 3.9.10 (Android) and 3.9.7 (iOS) 
 
   <h4>Step 2. Enable <em>Online Maps plugin</em></h4>
   <a href="res/osmand01.png" data-lightbox="os1" data-title="OsmAnd setup 1"><img style="height:300px" src="res/osmand01.png" alt="OsmAnd" /></a>
@@ -194,6 +195,7 @@ else
     <li>Layer URL (with your VeloViewer ID) <code><?=$url ?></code>
     <li>Save
   </ol>
+  <p><strong>Important: <em>iOS OsmAnd</em></strong> requires different format of URL template: <code><?=$alturl ?></code></p>
   <a href="res/osmand04.png" data-lightbox="br4" data-title="OsmAnd setup 4"><img style="height:300px" src="res/osmand04.png" alt="OsmAnd" /></a>
 
   <h4>Step 5. Enable Overlay</h4>
@@ -210,6 +212,8 @@ else
   <a href="res/osmand08.png" data-lightbox="br8" data-title="OsmAnd setup 8"><img style="height:300px" src="res/osmand08.png" alt="OsmAnd" /></a>
   <a href="res/osmand09.png" data-lightbox="br9" data-title="OsmAnd setup 9"><img style="height:300px" src="res/osmand09.png" alt="OsmAnd" /></a>
   <a href="res/osmand10.png" data-lightbox="br10" data-title="OsmAnd setup 10"><img style="height:300px" src="res/osmand10.png" alt="OsmAnd" /></a>
+  <p>iOS Version</p>
+  <a href="res/osmand11.png" data-lightbox="br11" data-title="OsmAnd setup 11"><img style="height:300px" src="res/osmand11.png" alt="OsmAnd" /></a>
 
 <hr>
 <h3>Problems?</h3>
