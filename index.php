@@ -58,6 +58,11 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
     <h3><a href="https://osmand.net">OsmAnd</a></h3>
     <a href="res/osmand-ex.png" data-lightbox="example-3" data-title="OsmAnd"><img style="height:300px" src="res/osmand-ex.png" alt="OsmAnd"/></a>
   </div>
+  <div class="xcol">
+    <h3><a href="https://nakarte.me">NaKarte.me</a></h3>
+    <a href="res/nakarte-ex.png" data-lightbox="example-4" data-title="NaKarte"><img style="height:300px" src="res/nakarte-ex.png" alt="NaKarte"/></a>
+  </div>
+
 </div>
 
 <hr>
@@ -109,6 +114,7 @@ if ($id > -1)
 else
 {
     $url = "*** setup VeloViewer ID first ***";
+    $alturl = $url;
     ?>
     You have to setup your VeloViewer ID.
     <?
@@ -133,6 +139,23 @@ else
   <h4>Step 3 - Enable the layer</h4>
   <a href="res/brouter3.png" data-lightbox="br3" data-title="BRouter Web setup 3"><img style="height:300px" src="res/brouter3.png" alt="BRouter" /></a>
 
+<hr>
+<h3>Setup NaKarte.me</h3>
+  <p>NaKarte web interface: <a href="https://nakarte.me">https://nakarte.me</a></p>
+
+  <h4>Step 1 - choose <strong>Add custom Layer</strong> (pencil icon)</h4>
+
+  <h4>Step 2 - Fill the <strong>form</strong></h4>
+  <ol>
+    <li>Layer name
+    <li>Tile URL template (with your VeloViewer ID) <code><?=$url ?></code>
+    <li>Choose <strong>overlay</strong>
+    <li>Add layer
+  </ol>
+  <a href="res/nakarte1.png" data-lightbox="nk1" data-title="NaKarte setup 1"><img style="height:300px" src="res/nakarte1.png" alt="NaKarte" /></a>
+
+  <h4>Step 3 - Enable the layer</h4>
+  <a href="res/nakarte-ex.png" data-lightbox="nk2" data-title="NaKarte setup 2"><img style="height:300px" src="res/nakarte-ex.png" alt="NaKarte" /></a>
 
 <hr>
 <h3>Setup Locus Map</h3>
