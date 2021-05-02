@@ -107,7 +107,7 @@ if ($id > -1)
     $alturl = "https://".$_SERVER['HTTP_HOST']."/".$id."/{0}/{1}/{2}.png";
     ?>
     <input type="hidden" id="vvexp_url" name="vvexp_url" value="<?=$url ?>">
-    <p><code><?=$url ?></code></p> 
+    <p><code><?=$url ?></code></p>
 
     <?
 }
@@ -155,7 +155,7 @@ else
   <a href="res/nakarte1.png" data-lightbox="nk1" data-title="NaKarte setup 1"><img style="height:300px" src="res/nakarte1.png" alt="NaKarte" /></a>
 
   <h4>Step 3 - Enable the layer</h4>
-  <a href="res/nakarte-ex.png" data-lightbox="nk2" data-title="NaKarte setup 2"><img style="height:300px" src="res/nakarte-ex.png" alt="NaKarte" /></a>
+  <a href="res/nakarte2.png" data-lightbox="nk2" data-title="NaKarte setup 2"><img style="height:300px" src="res/nakarte2.png" alt="NaKarte" /></a>
 
 <hr>
 <h3>Setup Locus Map</h3>
@@ -201,7 +201,7 @@ else
   <p>OsmAnd Application: <a href="https://osmand.net">https://osmand.net</a></p>
 
   <h4>Step 1. Install OsmAnd</h4>
-  Install OsmAnd on your smartphone. Tested with OsmAnd+ 3.9.10 (Android) and 3.9.7 (iOS) 
+  Install OsmAnd on your smartphone. Tested with OsmAnd+ 3.9.10 (Android) and 3.9.7 (iOS)
 
   <h4>Step 2. Enable <em>Online Maps plugin</em></h4>
   <a href="res/osmand01.png" data-lightbox="os1" data-title="OsmAnd setup 1"><img style="height:300px" src="res/osmand01.png" alt="OsmAnd" /></a>
