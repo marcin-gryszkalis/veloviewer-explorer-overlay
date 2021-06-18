@@ -94,6 +94,8 @@ if ($id > -1 && file_exists("cache/$id.php"))
 <a href="refresh.php" data-button>Refresh Explorer Stats</a>
 
 <p>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</p>
+<a href="res/vv-options.png" data-lightbox="vv-options" data-title="VV Options"><img style="height:200px" src="res/vv-options.png" alt="VV Options"/></a>
+
 <p>Refreshing may take several seconds or even minutes.</p>
 
 <hr>
@@ -240,8 +242,7 @@ else
 
 <hr>
 <h3>Problems?</h3>
-  <p>If you have any problems please report an issue at <a href="https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues">https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues</a></p>
-
+  <p>If you have any problems please report an issue at <a href="https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues">https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues</a> or just write to <span class="material-icons md-18 md-dark">email</span> <a href="mailto:mg@fork.pl">mg@fork.pl</a></p>
 
 <!--
   <blockquote>
