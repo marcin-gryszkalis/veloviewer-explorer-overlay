@@ -99,6 +99,13 @@ if (preg_match("/Not authenticated/", $response))
     exit(1);
 }
 
+if (preg_match("/This athlete's activities are not available/", $response))
+{
+    print("ERROR: Activities are not available -- You need to enable <b>Share my data with anyone</b> and <b>Show my details in the VeloViewer leaderboard</b> in VeloViewer Options.");
+    exit(1);
+}
+
+
 if (!preg_match('/"(https:..s3.veloviewer.com.athletes[^"]+maps.\d+.js)"/', $response, $m))
 {
     print("ERROR: can't find explorer url (maps)");
