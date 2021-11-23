@@ -1,8 +1,23 @@
 <?php
-$cookie = "vvexp_id";
+include("lib.php");
+
+$mode = "vv";
+if (isset($_GET['mode']))
+{
+    $mode = $_GET['mode'];
+}
 
 $id = -1;
-if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
+if ($mode == "vv")
+{
+    $cookie = "vvexp_id";
+    if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
+}
+else
+{
+    $cookie = "shexp_id";
+    if (isset($_COOKIE[$cookie])) { $id = sh_key2alias($_COOKIE[$cookie]); }
+}
 
 if ($id > -1)
 {

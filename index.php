@@ -242,7 +242,21 @@ else
   Install Locus Map on your smartphone, note - the overlay was tested with LocusMap App version 3 (pro).
 
   <h4>Step 2. Get providers.xml</h4>
-  <p><a href="providers.php">Click here to download your personal providers.xml file to be used in Locus Map</a></p>
+
+<?
+if ($id_vv != "")
+{
+    ?>
+  <p><a href="providers.php?mode=vv">Click here to download your personal providers.xml file to be used in Locus Map (VeloViewer)</a></p>
+    <?
+}
+if ($id_sh != "")
+{
+    ?>
+  <p><a href="providers.php?mode=sh">Click here to download your personal providers.xml file to be used in Locus Map (StatHunters)</a></p>
+    <?
+}
+?>
 
   <h4>Step 3. Upload providers.xml to smartphone</h4>
   <p>It should be stored in <code>Internal Storage / Locus / mapsOnline / custom</code> directory.</p>
