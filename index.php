@@ -1,11 +1,18 @@
 <?
 include("lib.php");
 
-$cookie = "vvexp_id";
+$cookie_vv = "vvexp_id";
+$cookie_sh = "shexp_id";
 
-$id = -1;
-if (isset($_COOKIE[$cookie])) { $id = intval($_COOKIE[$cookie]); }
-if (isset($_POST[$cookie])) { $id = intval($_POST[$cookie]); }
+$id_vv = "";
+if (isset($_COOKIE[$cookie_vv])) { $id_vv = intval($_COOKIE[$cookie_vv]); }
+if (isset($_POST[$cookie_vv])) { $id_vv = intval($_POST[$cookie_vv]); }
+
+$id_sh = "";
+if (isset($_COOKIE[$cookie_sh])) { $id_sh = $_COOKIE[$cookie_sh]; }
+if (isset($_POST[$cookie_sh])) { $id_sh = $_POST[$cookie_sh]; }
+$id_sh = preg_replace("/[^a-f0-9]+/g", "", $id_sh);
+$id_sh = substr($id_sh, 0, 32);
 
 $cookieopts = array (
     'expires' => time() + 60*60*24*365, // 1 year
@@ -16,7 +23,14 @@ $cookieopts = array (
     'samesite' => 'Lax'
     );
 
-if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
+if ($id_vv != "") { setcookie($cookie_vv, $id_vv, $cookieopts); }
+if ($id_sh != "") { setcookie($cookie_sh, $id_sh, $cookieopts); }
+
+$shalias = "";
+if (strlen($id_sh) == 32) // SH key
+{
+    $shalias = sh_key2alias($id_sh);
+}
 
 ?><!DOCTYPE html>
 <html lang="en" >
@@ -42,7 +56,7 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
 </head>
 <body>
 <main>
-  <h1>VeloViewer Explorer</h1>
+  <h1>VeloViewer / StatHunters - Explorer</h1>
   <h2>Generic Overlay</h2>
 
 <div class="xrow">
@@ -66,23 +80,40 @@ if ($id > -1) { setcookie($cookie, $id, $cookieopts); }
 </div>
 
 <hr>
-<h3>VeloViewer ID</h3>
-<p>You can find your VeloViewer ID in URL bar at <a href="https://veloviewer.com/">veloviewer.com</a> - it's the number behind /athlete/.</p>
 
-<form action="index.php" method="post">
-<input type="text" name="vvexp_id" class="textinput" onfocus="if (this.value=='not set') { this.value='' }" value="<?=$id > -1 ? $id : "not set" ?>">
-<input type="submit" value="Save" data-button>
-</form>
-
-<hr>
-<h3>Explorer Stats</h3>
 <?
-if ($id > -1 && file_exists("cache/$id.php"))
+if ($id_vv != "" && file_exists("cache/$id_vv.php") || $id_sh != "" && file_exists("cache/$shalias.php"))
 {
-    $ft = filemtime("cache/$id.php");
+    ?>
+<h3>Explorer Stats</h3>
+    <?
+}
+
+if ($id_vv != "" && file_exists("cache/$id_vv.php"))
+{
+    ?>
+<h4>VeloViewer</h4>
+    <?
+    $ft = filemtime("cache/$id_vv.php");
     $ago = human_time_diff(time(), $ft);
 
-    include("cache/stats-$id.php");
+    include("cache/stats-$id_vv.php");
+?>
+    <p>Your data was refreshed <?=$ago ?> ago</p>
+    <p>Visited Tiles: <?=$stats_tiles ?></p>
+    <p>Max Square: <?=$stats_maxsquare ?>x<?=$stats_maxsquare ?></p>
+<?
+}
+
+if ($id_sh != "" && file_exists("cache/$shalias.php"))
+{
+    ?>
+<h4>StatHunters</h4>
+    <?
+    $ft = filemtime("cache/$shalias.php");
+    $ago = human_time_diff(time(), $ft);
+
+    include("cache/stats-$shalias.php");
 ?>
     <p>Your data was refreshed <?=$ago ?> ago</p>
     <p>Visited Tiles: <?=$stats_tiles ?></p>
@@ -91,6 +122,17 @@ if ($id > -1 && file_exists("cache/$id.php"))
 }
 ?>
 
+<hr>
+
+<h3>Configure for <a href="https://veloviewer.com/">VeloViewer</a></h3>
+<h4>VeloViewer ID</h4>
+<p>You can find your VeloViewer ID in URL bar at <a href="https://veloviewer.com/">veloviewer.com</a> - it's the number behind /athlete/.</p>
+
+<form action="index.php" method="post">
+<input type="text" name="<?=$cookie_vv ?>" class="textinput" onfocus="if (this.value=='not set') { this.value='' }" value="<?=$id_vv != "" ? $id_vv : "not set" ?>">
+<input type="submit" value="Save" data-button>
+</form>
+
 <a href="refresh.php" data-button>Refresh Explorer Stats</a>
 
 <p>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</p>
@@ -98,32 +140,81 @@ if ($id > -1 && file_exists("cache/$id.php"))
 
 <p>Refreshing may take several seconds or even minutes.</p>
 
-<hr>
-<h3>Overlay tile map URL</h3>
+<h4>Overlay tile map URL</h4>
 <p>You can use this overlay in any system that supports standard tile servers</p>
 <?
 
-if ($id > -1)
+if ($id_vv != "")
 {
-    $url = "https://".$_SERVER['HTTP_HOST']."/".$id."/{z}/{x}/{y}.png";
-    $alturl = "https://".$_SERVER['HTTP_HOST']."/".$id."/{0}/{1}/{2}.png";
+    $url_vv = "https://".$_SERVER['HTTP_HOST']."/".$id_vv."/{z}/{x}/{y}.png";
     ?>
-    <input type="hidden" id="vvexp_url" name="vvexp_url" value="<?=$url ?>">
-    <p><code><?=$url ?></code></p>
+    <p>VeloViewer: <code><?=$url ?></code></p>
 
     <?
 }
 else
 {
-    $url = "*** setup VeloViewer ID first ***";
-    $alturl = $url;
     ?>
-    You have to setup your VeloViewer ID.
+    You have to setup your VeloViewer ID first.
     <?
 }
 ?>
 
 <hr>
+
+<h3>Configure for <a href="https://www.statshunters.com/">StatHunters</a></h3>
+<h4>StatHunters API key</h4>
+<p>You can find your API key in StatHunters Settings: <a href="https://www.statshunters.com/settings">https://www.statshunters.com/settings</a></p>
+<a href="res/shsettings.png" data-lightbox="shs" data-title="StatHunters Settings"><img style="height:300px" src="res/shsettings.png" alt="SH" /></a>
+
+<form action="index.php" method="post">
+<input type="text" name="<?=$cookie_sh ?>" class="textinput" onfocus="if (this.value=='not set') { this.value='' }" value="<?=$id_sh != "" ? $alias : "not set" ?>">
+<input type="submit" value="Save" data-button>
+</form>
+
+<a href="refresh.php" data-button>Refresh Explorer Stats</a>
+
+<p>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</p>
+<a href="res/vv-options.png" data-lightbox="vv-options" data-title="VV Options"><img style="height:200px" src="res/vv-options.png" alt="VV Options"/></a>
+
+<p>Refreshing may take several seconds or even minutes.</p>
+
+<h4>Overlay tile map URL</h4>
+<p>You can use this overlay in any system that supports standard tile servers</p>
+<?
+
+if ($id_sh != "")
+{
+    $url_sh = "https://".$_SERVER['HTTP_HOST']."/".$shalias."/{z}/{x}/{y}.png";
+    ?>
+    <p>StatHunters<code><?=$url ?></code></p>
+
+    <?
+}
+else
+{
+    ?>
+    You have to setup your StatHunters API key.
+    <?
+}
+
+if ($url_sh == "" && $url_vv == "")
+{   
+    $url = "*** setup VeloViewer ID or StatHunters API key first ***";
+}
+elseif ($url_sh != "" && $url_vv != "")
+{
+    $url = "<b>$url_vv</b> (VV) or <b>$url_sh</b> (SH)";
+}
+else
+{
+    $url = $url_vv.$url_sh;
+}
+
+?>
+
+<hr>
+
 <h3>Setup BRouter Web</h3>
   <p>BRouter Planner web interface: <a href="https://brouter.de/brouter-web">https://brouter.de/brouter-web</a></p>
 
@@ -220,7 +311,7 @@ else
     <li>Layer URL (with your VeloViewer ID) <code><?=$url ?></code>
     <li>Save
   </ol>
-  <p><strong>Important: <em>iOS OsmAnd</em></strong> requires different format of URL template: <code><?=$alturl ?></code></p>
+  <p><strong>Important: <em>iOS OsmAnd</em></strong> required different format of URL template ({z}/{x}/{y} replaced with {0}/{1}/{2}) but they fixed it in recent versions.</p>
   <a href="res/osmand04.png" data-lightbox="br4" data-title="OsmAnd setup 4"><img style="height:300px" src="res/osmand04.png" alt="OsmAnd" /></a>
 
   <h4>Step 5. Enable Overlay</h4>

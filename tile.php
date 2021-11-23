@@ -3,12 +3,12 @@
 $x = intval($_GET['x']);
 $y = intval($_GET['y']);
 $z = intval($_GET['z']);
-$id = intval($_GET['id']);
+$id = preg_replace("/[^a-zA-Z0-9_]+/g", "", $_GET['id']);
 
 header('Content-type: image/png');
 
 error_log("id($id) $x:$y @ $z");
-if ($z < 7 || $id == 0 || !file_exists("cache/$id.php")) # z7 is lowest level that makes sense to display
+if ($z < 7 || $id == "" || !file_exists("cache/$id.php")) # z7 is lowest level that makes sense to display
 {
     readfile("empty256x256.png");
     exit();
