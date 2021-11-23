@@ -3,7 +3,7 @@
 $x = intval($_GET['x']);
 $y = intval($_GET['y']);
 $z = intval($_GET['z']);
-$id = preg_replace("/[^a-zA-Z0-9_]+/g", "", $_GET['id']);
+$id = intval($_GET['id']);
 
 header('Content-type: image/png');
 

@@ -93,6 +93,6 @@ function human_time_diff( $from, $to = 0 ) {
 // for 2^48 values probability of alias collision in set of 100k users is (1 - 99.9982236767)
 function sh_key2alias($key)
 {
-    return hexdec(substr(hash("sha256", $id), 0, 12)); # 12 hex digits = 48 bit
+    return hexdec(substr(hash("sha256", $key), 0, 12)); # 12 hex digits = 48 bit
 }
 

@@ -11,7 +11,7 @@ if (isset($_POST[$cookie_vv])) { $id_vv = intval($_POST[$cookie_vv]); }
 $id_sh = "";
 if (isset($_COOKIE[$cookie_sh])) { $id_sh = $_COOKIE[$cookie_sh]; }
 if (isset($_POST[$cookie_sh])) { $id_sh = $_POST[$cookie_sh]; }
-$id_sh = preg_replace("/[^a-f0-9]+/g", "", $id_sh);
+$id_sh = preg_replace('/[^a-f0-9]+/', "", $id_sh);
 $id_sh = substr($id_sh, 0, 32);
 
 $cookieopts = array (
@@ -133,29 +133,21 @@ if ($id_sh != "" && file_exists("cache/$shalias.php"))
 <input type="submit" value="Save" data-button>
 </form>
 
-<a href="refresh.php" data-button>Refresh Explorer Stats</a>
-
 <p>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</p>
-<a href="res/vv-options.png" data-lightbox="vv-options" data-title="VV Options"><img style="height:200px" src="res/vv-options.png" alt="VV Options"/></a>
+<p><a href="res/vv-options.png" data-lightbox="vv-options" data-title="VV Options"><img style="height:200px" src="res/vv-options.png" alt="VV Options"/></a></p>
 
-<p>Refreshing may take several seconds or even minutes.</p>
-
-<h4>Overlay tile map URL</h4>
-<p>You can use this overlay in any system that supports standard tile servers</p>
 <?
-
 if ($id_vv != "")
 {
     $url_vv = "https://".$_SERVER['HTTP_HOST']."/".$id_vv."/{z}/{x}/{y}.png";
     ?>
-    <p>VeloViewer: <code><?=$url ?></code></p>
 
-    <?
-}
-else
-{
-    ?>
-    You have to setup your VeloViewer ID first.
+<a href="refresh_vv.php" data-button>Refresh Explorer Stats</a>
+<p>Refreshing may take several seconds or even minutes.</p>
+
+<h4>Overlay tile map URL</h4>
+<p>You can use this overlay in any system that supports standard tile servers</p>
+<p><code><?=$url_vv ?></code></p>
     <?
 }
 ?>
@@ -168,35 +160,27 @@ else
 <a href="res/shsettings.png" data-lightbox="shs" data-title="StatHunters Settings"><img style="height:300px" src="res/shsettings.png" alt="SH" /></a>
 
 <form action="index.php" method="post">
-<input type="text" name="<?=$cookie_sh ?>" class="textinput" onfocus="if (this.value=='not set') { this.value='' }" value="<?=$id_sh != "" ? $alias : "not set" ?>">
+<input type="text" name="<?=$cookie_sh ?>" size="32" class="textinput" onfocus="if (this.value=='not set') { this.value='' }" value="<?=$id_sh != "" ? $id_sh : "not set" ?>">
 <input type="submit" value="Save" data-button>
 </form>
 
-<a href="refresh.php" data-button>Refresh Explorer Stats</a>
-
-<p>You need to enable <strong>Share my data with anyone</strong> and <strong>Show my details in the VeloViewer leaderboard</strong> in VeloViewer Options.</p>
-<a href="res/vv-options.png" data-lightbox="vv-options" data-title="VV Options"><img style="height:200px" src="res/vv-options.png" alt="VV Options"/></a>
+<?
+if ($id_sh != "")
+{
+    $url_sh = "https://".$_SERVER['HTTP_HOST']."/".$shalias."/{z}/{x}/{y}.png";
+    ?>
+<a href="refresh_sh.php" data-button>Refresh Explorer Stats</a>
 
 <p>Refreshing may take several seconds or even minutes.</p>
 
 <h4>Overlay tile map URL</h4>
 <p>You can use this overlay in any system that supports standard tile servers</p>
+<p><code><?=$url_sh ?></code></p>
+    <?
+}
+?>
+
 <?
-
-if ($id_sh != "")
-{
-    $url_sh = "https://".$_SERVER['HTTP_HOST']."/".$shalias."/{z}/{x}/{y}.png";
-    ?>
-    <p>StatHunters<code><?=$url ?></code></p>
-
-    <?
-}
-else
-{
-    ?>
-    You have to setup your StatHunters API key.
-    <?
-}
 
 if ($url_sh == "" && $url_vv == "")
 {   
