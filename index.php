@@ -137,6 +137,7 @@ if ($id_sh != "" && file_exists("cache/$shalias.php"))
 <p><a href="res/vv-options.png" data-lightbox="vv-options" data-title="VV Options"><img style="height:200px" src="res/vv-options.png" alt="VV Options"/></a></p>
 
 <?
+$url_vv = "";
 if ($id_vv != "")
 {
     $url_vv = "https://".$_SERVER['HTTP_HOST']."/".$id_vv."/{z}/{x}/{y}.png";
@@ -165,6 +166,7 @@ if ($id_vv != "")
 </form>
 
 <?
+$url_sh = "";
 if ($id_sh != "")
 {
     $url_sh = "https://".$_SERVER['HTTP_HOST']."/".$shalias."/{z}/{x}/{y}.png";
