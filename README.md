@@ -8,6 +8,10 @@ Generic overlay for VeloViewer Explorer squares
 - https://blog.veloviewer.com/veloviewer-explorer-score-and-max-square/
 - https://rideeverytile.com/
 - https://www.strava.com/clubs/279168
+- https://www.statshunters.com/faq-10-what-are-explorer-tiles
+- https://rowerowyrownik.cf/mapa/
+- https://www.wykop.pl/tag/kwadraty/
+- https://squadrats.com/
 
 ## BRouter example
 ![brouter with overlay](brouter-example.png "brouter with overlay!")
