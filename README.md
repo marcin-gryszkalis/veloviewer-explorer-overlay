@@ -20,4 +20,5 @@ Generic overlay for VeloViewer Explorer squares
 - [ ] cache (at least for z=14+ and later for z=11..13)
 - [x] largest square support (clashes with generic cache)
 - [x] different color for clusters ("inside" squares), (note: cache)
+- [ ] display boundaries of smaller squares (squadratinhos style, 8x8+)
 
