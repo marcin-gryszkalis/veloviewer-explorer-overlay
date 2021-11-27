@@ -5,11 +5,7 @@ include("lib.php");
 
 $cookie = "shexp_id";
 
-$id = "";
-if (isset($_COOKIE[$cookie])) { $id = $_COOKIE[$cookie]; }
-# allow overwrite in request
-if (isset($_POST[$cookie])) { $id = $_POST[$cookie]; }
-if (isset($_GET[$cookie])) { $id = $_GET[$cookie]; }
+$id = $_COOKIE[$cookie] ?? $_POST[$cookie] ?? $_GET[$cookie];
 $id = preg_replace("/[^a-f0-9]+/", "", $id);
 $id = substr($id, 0, 32);
 
