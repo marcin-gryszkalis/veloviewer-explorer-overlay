@@ -343,19 +343,19 @@ $exurl2 = "https://".$_SERVER['HTTP_HOST']."/00000000000/ms-0/tv-0/tc-0/cg-00000
 
 <h4>Options</h4>
 <table>
-<tr><th>option name<th>option value<th>default value<th>description
-<tr><td>ms<td>1 (visible) or 0 (hidden)<td>1<td>show max square frame
-<tr><td>cl<td>1 (show cluster squares with different color) or 0 (don't distinguish cluster squares)<td>1<td>show cluster squares
+<tr><th>option name<th>decription<th>option value<th>default value
+<tr><td>ms<td>show max square frame<td>1 (visible) or 0 (hidden)<td>1
+<tr><td>cl<td>show cluster squares<td>1 (show cluster squares with different color) or 0 (don't distinguish cluster squares)<td>1
 
-<tr><td>cv<td>rgb color as 6-digit hex number<td>ff0000<td>color of visited square
-<tr><td>cc<td>rgb color as 6-digit hex number<td>0000ff<td>color of cluster squares
-<tr><td>cg<td>rgb color as 6-digit hex number<td>ff0000<td>color of grid
-<tr><td>cm<td>rgb color as 6-digit hex number<td>0000c8<td>color of max square grid
+<tr><td>cv<td>color of visited square<td>rgb color as 6-digit hex number<td>ff0000
+<tr><td>cc<td>color of cluster squares<td>rgb color as 6-digit hex number<td>0000ff
+<tr><td>cg<td>color of grid<td>rgb color as 6-digit hex number<td>ff0000
+<tr><td>cm<td>color of max square grid<td>rgb color as 6-digit hex number<td>0000c8
 
-<tr><td>tv<td>integer 0-127 (0 - opaque, 127 - transparent)<td>115<td>transparency of visited square
-<tr><td>tc<td>integer 0-127<td>115<td>transparency of cluster squares
-<tr><td>tg<td>integer 0-127<td>50<td>transparency of grid
-<tr><td>tm<td>integer 0-127<td>50<td>transparency of max square grid
+<tr><td>tv<td>transparency of visited square<td>integer 0-127 (0 - opaque, 127 - transparent)<td>115
+<tr><td>tc<td>transparency of cluster squares<td>integer 0-127<td>115
+<tr><td>tg<td>transparency of grid<td>integer 0-127<td>50
+<tr><td>tm<td>transparency of max square grid<td>integer 0-127<td>50
 </table>
 
 <h4>Examples</h4>
