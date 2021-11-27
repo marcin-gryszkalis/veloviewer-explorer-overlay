@@ -332,6 +332,44 @@ if ($id_sh != "")
   <a href="res/osmand11.png" data-lightbox="br11" data-title="OsmAnd setup 11"><img style="height:300px" src="res/osmand11.png" alt="OsmAnd" /></a>
 
 <hr>
+<h3>Tile opions</h3>
+
+<p>You can specify customize tile colors etc. with several options.</p>
+<p>Add one or more parameters between id element and coordinates. Options are separated with single slash "/", name is separated from value with single hyphen "-".</p>
+<?
+$exurl1 = "https://".$_SERVER['HTTP_HOST']."/00000000000/ms-1/cl-1/cv-00ff00/tv-100/cc-00dd00/tc-100/cg-666666/tg-20/cm-000000/tm-20/{z}/{x}/{y}.png";
+$exurl2 = "https://".$_SERVER['HTTP_HOST']."/00000000000/ms-0/tv-0/tc-0/cg-00000000/tg-0/{z}/{x}/{y}.png";
+?>
+
+<h4>Options</h4>
+<table>
+<tr><th>option name<th>option value<th>default value<th>description
+<tr><td>ms<td>1 (visible) or 0 (hidden)<td>1<td>show max square frame
+<tr><td>cl<td>1 (show cluster squares with different color) or 0 (don't distinguish cluster squares)<td>1<td>show cluster squares
+
+<tr><td>cv<td>rgb color as 6-digit hex number<td>ff0000<td>color of visited square
+<tr><td>cc<td>rgb color as 6-digit hex number<td>0000ff<td>color of cluster squares
+<tr><td>cg<td>rgb color as 6-digit hex number<td>ff0000<td>color of grid
+<tr><td>cm<td>rgb color as 6-digit hex number<td>0000c8<td>color of max square grid
+
+<tr><td>tv<td>integer 0-127 (0 - opaque, 127 - transparent)<td>115<td>transparency of visited square
+<tr><td>tc<td>integer 0-127<td>115<td>transparency of cluster squares
+<tr><td>tg<td>integer 0-127<td>50<td>transparency of grid
+<tr><td>tm<td>integer 0-127<td>50<td>transparency of max square grid
+</table>
+
+<h4>Examples</h4>
+
+<p>Change colors: <code><?=$exurl1 ?></code> will render view similar to<p>
+<a href="res/cfg-example-1.png" data-lightbox="cex1" data-title="Options example"><img style="height:300px" src="res/cfg-example-1.png" alt="Ex" /></a>
+
+<p>Change transparency: <code><?=$exurl2 ?></code> will render opaque tiles (and one can adjust transparency in your mapping application)<p>
+<a href="res/cfg-example-2a.png" data-lightbox="cex2a" data-title="Options example 2a"><img style="height:300px" src="res/cfg-example-2a.png" alt="Ex" /></a>
+<a href="res/cfg-example-2b.png" data-lightbox="cex2b" data-title="Options example 2b"><img style="height:300px" src="res/cfg-example-2b.png" alt="Ex" /></a>
+
+
+
+<hr>
 <h3>Problems?</h3>
   <p>If you have any problems please report an issue at <a href="https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues">https://github.com/marcin-gryszkalis/veloviewer-explorer-overlay/issues</a> or just write to <span class="material-icons md-18 md-dark">email</span> <a href="mailto:mg@fork.pl">mg@fork.pl</a></p>
 

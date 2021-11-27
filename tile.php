@@ -4,10 +4,10 @@ $x = intval($_GET['x']);
 $y = intval($_GET['y']);
 $z = intval($_GET['z']);
 $id = intval($_GET['id']);
-
+$cfgs = $_GET['cfg'] ?? '';
 header('Content-type: image/png');
 
-error_log("id($id) $x:$y @ $z");
+error_log("id($id) $x:$y @ $z cfg[$cfgs]");
 if ($z < 7 || $id == "" || !file_exists("cache/$id.php")) # z7 is lowest level that makes sense to display
 {
     readfile("empty256x256.png");
@@ -34,12 +34,41 @@ if ($z > 14)
     $f_t = ($y == ($oy / (2**$dz)));
 }
 
+# default config
+$cfg['ms'] = 1;
+$cfg['cl'] = 1;
+$cfg['cv'] = 'ff0000';
+$cfg['cc'] = '0000ff';
+$cfg['cg'] = 'ff0000';
+$cfg['cm'] = '0000c8';
+$cfg['tv'] = 115;
+$cfg['tc'] = 115;
+$cfg['tg'] = 50;
+$cfg['tm'] = 50;
+
+function colorfromhexa($img, $hc, $alpha)
+{
+    return 
+    imagecolorallocatealpha($img, 
+        hexdec(substr($hc, 0, 2)), 
+        hexdec(substr($hc, 2, 2)), 
+        hexdec(substr($hc, 4, 2)), 
+        $alpha);
+}
+
+$cfga = explode("/", $cfgs);
+foreach ($cfga as $c)
+{
+    $ca = explode("-", $c);
+    $cfg[$ca[0]] = $ca[1] ?? $cfg[$ca[0]] ?? '';
+}
+
 $png = imagecreatefrompng("empty256x256.png");
-imagesavealpha($png, true); # alpha: 0..127
-$c_bg = imagecolorallocatealpha($png, 255, 0, 0, 115); 
-$c_bg_cluster = imagecolorallocatealpha($png, 0, 0, 255, 115); 
-$c_frame = imagecolorallocatealpha($png, 255, 0, 0, 50);
-$c_frame_maxsq = imagecolorallocatealpha($png, 0, 0, 200, 50);
+imagesavealpha($png, true);
+$c_bg = colorfromhexa($png, $cfg['cv'], $cfg['tv']);
+$c_bg_cluster = colorfromhexa($png, $cfg['cc'], $cfg['tc']);
+$c_frame = colorfromhexa($png, $cfg['cg'], $cfg['tg']);
+$c_frame_maxsq = colorfromhexa($png, $cfg['cm'], $cfg['tm']);
  
 function in_cluster($x, $y, $exp)
 {
@@ -56,12 +85,12 @@ if ($z >= 14)
     
     if (array_key_exists("$x:$y", $exp))
     {
-        imagefilledrectangle($png, 0, 0, 255, 255, in_cluster($x, $y, $exp) ? $c_bg_cluster : $c_bg);
+        imagefilledrectangle($png, 0, 0, 255, 255, $cfg['cl'] == 1 && in_cluster($x, $y, $exp) ? $c_bg_cluster : $c_bg);
     }
     
     if ($f_l) 
     {
-        if (array_key_exists("$x:$y", $maxsq_left))
+        if ($cfg['ms'] && array_key_exists("$x:$y", $maxsq_left))
         {
             imageline($png, 0, 0, 0, 255, $c_frame_maxsq);
             imageline($png, 1, 0, 1, 255, $c_frame_maxsq);
@@ -74,7 +103,7 @@ if ($z >= 14)
 
     if ($f_t) 
     {
-        if (array_key_exists("$x:$y", $maxsq_top))
+        if ($cfg['ms'] && array_key_exists("$x:$y", $maxsq_top))
         {
             imageline($png, 0, 0, 255, 0, $c_frame_maxsq);
             imageline($png, 0, 1, 255, 1, $c_frame_maxsq);
