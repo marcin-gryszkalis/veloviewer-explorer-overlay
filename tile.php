@@ -1,39 +1,5 @@
 <?php
 
-$x = intval($_GET['x']);
-$y = intval($_GET['y']);
-$z = intval($_GET['z']);
-$id = intval($_GET['id']);
-$cfgs = $_GET['cfg'] ?? '';
-header('Content-type: image/png');
-
-error_log("id($id) $x:$y @ $z cfg[$cfgs]");
-if ($z < 7 || $id == "" || !file_exists("cache/$id.php")) # z7 is lowest level that makes sense to display
-{
-    readfile("empty256x256.png");
-    exit();
-}
-
-
-include("cache/$id.php");
-include("cache/maxsq-top-$id.php");
-include("cache/maxsq-left-$id.php");
-
-$f_t = $f_l = true;
-
-$ox = $x; # original
-$oy = $y;
-
-if ($z > 14)
-{
-    $dz = $z - 14;
-    $x = intval($x / (2**$dz));
-    $y = intval($y / (2**$dz)); 
-
-    $f_l = ($x == ($ox / (2**$dz)));
-    $f_t = ($y == ($oy / (2**$dz)));
-}
-
 # default config
 $cfg['ms'] = 1;
 $cfg['cl'] = 1;
@@ -46,6 +12,62 @@ $cfg['tc'] = 115;
 $cfg['tg'] = 50;
 $cfg['tm'] = 50;
 
+$cfgs = $_GET['cfg'] ?? '';
+$cfga = explode("/", $cfgs);
+foreach ($cfga as $c)
+{
+    $ca = explode("-", $c);
+    $cfg[$ca[0]] = $ca[1] ?? $cfg[$ca[0]] ?? '';
+}
+
+$zoom = 14; # default, 17 for squadrathinos
+if (array_key_exists("zz", $cfg))
+{
+    $z = intval($cfg['zz']);
+    if ($z >= 14 && $z <= 17)
+    {
+        $zoom = $z; 
+    }      
+}
+
+$x = intval($_GET['x']);
+$y = intval($_GET['y']);
+$z = intval($_GET['z']);
+$id = intval($_GET['id']);
+header('Content-type: image/png');
+
+$anon = !file_exists("cache/$id.php");
+
+error_log("anon($anon) id($id) $x:$y @ $z zoom($zoom) cfg[$cfgs]");
+
+if ($z < $zoom - 7) # lowest level that makes sense to display
+{
+    readfile("empty256x256.png");
+    exit();
+}
+
+if (!$anon)
+{
+    include("cache/$id.php");
+    include("cache/maxsq-top-$id.php");
+    include("cache/maxsq-left-$id.php");
+}
+
+$f_t = $f_l = true;
+
+$ox = $x; # original
+$oy = $y;
+
+if ($z > $zoom)
+{
+    $dz = $z - $zoom;
+    $x = intval($x / (2**$dz));
+    $y = intval($y / (2**$dz)); 
+
+    $f_l = ($x == ($ox / (2**$dz)));
+    $f_t = ($y == ($oy / (2**$dz)));
+}
+
 function colorfromhexa($img, $hc, $alpha)
 {
     return 
@@ -54,13 +76,6 @@ function colorfromhexa($img, $hc, $alpha)
         hexdec(substr($hc, 2, 2)), 
         hexdec(substr($hc, 4, 2)), 
         $alpha);
-}
-
-$cfga = explode("/", $cfgs);
-foreach ($cfga as $c)
-{
-    $ca = explode("-", $c);
-    $cfg[$ca[0]] = $ca[1] ?? $cfg[$ca[0]] ?? '';
 }
 
 $png = imagecreatefrompng("empty256x256.png");
@@ -79,18 +94,18 @@ function in_cluster($x, $y, $exp)
         array_key_exists(($x).":".($y+1), $exp);
 }
 
-if ($z >= 14)
+if ($z >= $zoom)
 {
     # error_log("$x:$y = ".array_key_exists("$x:$y", $exp));
     
-    if (array_key_exists("$x:$y", $exp))
+    if (!$anon && array_key_exists("$x:$y", $exp))
     {
         imagefilledrectangle($png, 0, 0, 255, 255, $cfg['cl'] == 1 && in_cluster($x, $y, $exp) ? $c_bg_cluster : $c_bg);
     }
     
     if ($f_l) 
     {
-        if ($cfg['ms'] && array_key_exists("$x:$y", $maxsq_left))
+        if (!$anon && $cfg['ms'] && array_key_exists("$x:$y", $maxsq_left))
         {
             imageline($png, 0, 0, 0, 255, $c_frame_maxsq);
             imageline($png, 1, 0, 1, 255, $c_frame_maxsq);
@@ -103,7 +118,7 @@ if ($z >= 14)
 
     if ($f_t) 
     {
-        if ($cfg['ms'] && array_key_exists("$x:$y", $maxsq_top))
+        if (!$anon && $cfg['ms'] && array_key_exists("$x:$y", $maxsq_top))
         {
             imageline($png, 0, 0, 255, 0, $c_frame_maxsq);
             imageline($png, 0, 1, 255, 1, $c_frame_maxsq);
@@ -115,32 +130,35 @@ if ($z >= 14)
     }
 
 }
-elseif ($z < 14) # lower limit is checked before
+elseif ($z < $zoom) # lower limit is checked before
 {
-    $dz = 14 - $z;
+    $dz = $zoom - $z;
     $zm = 2 ** $dz; # zoom multiplier
     $r = 256 / $zm; # small square size
 
-    $jx = 0;
-    foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
+    if (!$anon)
     {
-        $jy = 0;
-        foreach (range($y*$zm, $y*$zm + $zm - 1) as $iy)
+        $jx = 0;
+        foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
         {
-#            error_log("z:$z $ix:$iy = ".array_key_exists("$ix:$iy", $exp));
-            if (array_key_exists("$ix:$iy", $exp))
+            $jy = 0;
+            foreach (range($y*$zm, $y*$zm + $zm - 1) as $iy)
             {
-                imagefilledrectangle($png, 
-                    $r * $jx, $r * $jy, 
-                    $r * $jx + $r - 1, $r * $jy + $r - 1, 
-                    in_cluster($ix, $iy, $exp) ? $c_bg_cluster : $c_bg);
+#            error_log("z:$z $ix:$iy = ".array_key_exists("$ix:$iy", $exp));
+                if (array_key_exists("$ix:$iy", $exp))
+                {
+                    imagefilledrectangle($png, 
+                        $r * $jx, $r * $jy, 
+                        $r * $jx + $r - 1, $r * $jy + $r - 1, 
+                        in_cluster($ix, $iy, $exp) ? $c_bg_cluster : $c_bg);
+                }
+                $jy++;      
             }
-            $jy++;      
+            $jx++;
         }
-        $jx++;
     }
 
-    if ($z >= 10) # no frames for lower zoom levels
+    if ($z >= $zoom-4) # no frames for lower zoom levels
     {
         foreach (range(0, $zm - 1) as $i)
         {
@@ -150,28 +168,30 @@ elseif ($z < 14) # lower limit is checked before
     }
 
     # max square requires checking all squares again 
-    $jx = 0;
-    foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
+    if (!$anon)
     {
-        $jy = 0;
-        foreach (range($y*$zm, $y*$zm + $zm - 1) as $iy)
+        $jx = 0;
+        foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
         {
-            if (array_key_exists("$ix:$iy", $maxsq_left))
+            $jy = 0;
+            foreach (range($y*$zm, $y*$zm + $zm - 1) as $iy)
             {
-               imageline($png, $r * $jx, $r * $jy, $r * $jx, $r * $jy + $r - 1, $c_frame_maxsq);
-               imageline($png, $r * $jx + 1, $r * $jy, $r * $jx + 1, $r * $jy + $r - 1, $c_frame_maxsq);
+                if (array_key_exists("$ix:$iy", $maxsq_left))
+                {
+                   imageline($png, $r * $jx, $r * $jy, $r * $jx, $r * $jy + $r - 1, $c_frame_maxsq);
+                   imageline($png, $r * $jx + 1, $r * $jy, $r * $jx + 1, $r * $jy + $r - 1, $c_frame_maxsq);
+                }
+    
+                if (array_key_exists("$ix:$iy", $maxsq_top))
+                {
+                    imageline($png, $r * $jx, $r * $jy, $r * $jx + $r - 1, $r * $jy, $c_frame_maxsq);
+                    imageline($png, $r * $jx, $r * $jy + 1, $r * $jx + $r - 1, $r * $jy + 1, $c_frame_maxsq);
+                }
+                $jy++;      
             }
-
-            if (array_key_exists("$ix:$iy", $maxsq_top))
-            {
-                imageline($png, $r * $jx, $r * $jy, $r * $jx + $r - 1, $r * $jy, $c_frame_maxsq);
-                imageline($png, $r * $jx, $r * $jy + 1, $r * $jx + $r - 1, $r * $jy + 1, $c_frame_maxsq);
-            }
-            $jy++;      
+            $jx++;
         }
-        $jx++;
     }
-
 
 }
 

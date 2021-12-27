@@ -346,6 +346,7 @@ $exurl2 = "https://".$_SERVER['HTTP_HOST']."/00000000000/ms-0/tv-0/tc-0/cg-00000
 <tr><th>option name<th>decription<th>option value<th>default value
 <tr><td>ms<td>show max square frame<td>1 (visible) or 0 (hidden)<td>1
 <tr><td>cl<td>show cluster squares<td>1 (show cluster squares with different color) or 0 (don't distinguish cluster squares)<td>1
+<tr><td>zz<td>zoom level<td>square base zoom level, 14 for standard squares, 17 for sqadratinhos (ony grid is supported)<td>14
 
 <tr><td>cv<td>color of visited square<td>rgb color as 6-digit hex number<td>ff0000
 <tr><td>cc<td>color of cluster squares<td>rgb color as 6-digit hex number<td>0000ff
