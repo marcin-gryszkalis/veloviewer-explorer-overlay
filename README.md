@@ -18,11 +18,12 @@ Generic overlay for VeloViewer Explorer squares
 
 ## TODO
 - [x] zoom level < 14
-- [ ] color setup support (maybe including transparency option), note: 4 colors (bg, frame, max sq. frame, cluster bg)
+- [x] color setup support (maybe including transparency option), note: 4 colors (bg, frame, max sq. frame, cluster bg)
 - [x] frames
 - [ ] auto-refresh of squares cache, with proper locking
 - [ ] cache (at least for z=14+ and later for z=11..13)
 - [x] largest square support (clashes with generic cache)
 - [x] different color for clusters ("inside" squares), (note: cache)
-- [ ] display boundaries of smaller squares (squadratinhos style, 8x8+)
+- [x] display boundaries of smaller squares (squadratinhos style, 8x8+)
+- [ ] load visited-squares data from squadrats.com
 
