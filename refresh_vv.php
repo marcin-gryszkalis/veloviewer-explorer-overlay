@@ -113,12 +113,17 @@ if (!preg_match('/"(https:..s3.veloviewer.com.athletes[^"]+maps.\d+.js)"/', $res
 }
 $urlmap = $m[1];
 
-if (!preg_match('/"(https:..s3.veloviewer.com.athletes[^"]+explorer.\d+.js)"/', $response, $m))
+if (preg_match('/"(https:..s3.veloviewer.com.athletes[^"]+explorer.\d+.js)"/', $response, $m))
 {
-    print("ERROR: can't find explorer url (activities)");
-    exit(1);
+    $urlexp = $m[1];
 }
-$urlexp = $m[1];
+else
+{
+//    print("ERROR: can't find explorer url (activities)");
+//    exit(1);
+
+    $urlexp = '';
+}
 
 if (!$usecache)
 {
@@ -131,22 +136,24 @@ if (!$usecache)
 
     $response1 = curl_exec($curl);
     $err = curl_error($curl);
+    file_put_contents("cache/vv2-$id.html", $response1);
 
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $urlexp,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
-        CURLOPT_ACCEPT_ENCODING => ""
-    ));
+    if ($urlexp)
+    {
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $urlexp,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+            CURLOPT_ACCEPT_ENCODING => ""
+        ));
 
-    $response2 = curl_exec($curl);
-    $err = curl_error($curl);
+        $response2 = curl_exec($curl);
+        $err = curl_error($curl);
+        file_put_contents("cache/vv3-$id.html", $response2);
+    }
 
     curl_close($curl);
 
-
-    file_put_contents("cache/vv2-$id.html", $response1);
-    file_put_contents("cache/vv3-$id.html", $response2);
 }
 else
 {
@@ -157,38 +164,41 @@ else
 $response = preg_replace('/mapsLoaded.(.*)./', '$1', $response1);
 $j1 = json_decode($response, true);
 
-$response = preg_replace('/explorerLoaded.(.*)./', '$1', $response2);
-$j2 = json_decode($response, true);
-
-# parse explorer paths (so called "definite" set)
-foreach ($j2 as $n => $v)
+if ($urlexp)
 {
-    $definite_check[$n] = 1; # to skip it during full path check
+    $response = preg_replace('/explorerLoaded.(.*)./', '$1', $response2);
+    $j2 = json_decode($response, true);
 
-    if ($debug && isset($dbg_activity))
+    # parse explorer paths (so called "definite" set)
+    foreach ($j2 as $n => $v)
     {
-        if ($n != $dbg_activity)
-        {
-            continue;
-        }
-    }
+        $definite_check[$n] = 1; # to skip it during full path check
 
-    $v = chop($v);
+        if ($debug && isset($dbg_activity))
+        {
+            if ($n != $dbg_activity)
+            {
+                continue;
+            }
+        }
 
-    $parr = decode_polyline($v);
-    $i = 0;
-    foreach ($parr as $p)
-    {
-        if ($i%2 == 0)
+        $v = chop($v);
+
+        $parr = decode_polyline($v);
+        $i = 0;
+        foreach ($parr as $p)
         {
-            $t = "$p:";
+            if ($i%2 == 0)
+            {
+                $t = "$p:";
+            }
+            else
+            {
+                $t .= "$p";
+                $tiles[$t] = 1;
+            }
+            $i++;
         }
-        else
-        {
-            $t .= "$p";
-            $tiles[$t] = 1;
-        }
-        $i++;
     }
 }
 
