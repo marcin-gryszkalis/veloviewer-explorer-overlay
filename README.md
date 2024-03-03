@@ -27,3 +27,10 @@ Generic overlay for VeloViewer Explorer squares
 - [x] display boundaries of smaller squares (squadratinhos style, 8x8+)
 - [ ] load visited-squares data from squadrats.com
 
+# Additional tools
+## square-gpx
+Generates .gpx file with square, which has top-left corner at given coordinates and size measured in zoom=14 tiles.
+
+Example: https://vv.fork.pl/square-gpx.php?lat=51.78949&lon=19.32213&side=5
+
+Given latitude and longitude has to be *inside* of top-left square.
