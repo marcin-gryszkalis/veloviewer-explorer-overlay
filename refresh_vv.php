@@ -164,6 +164,7 @@ else
 $response = preg_replace('/mapsLoaded.(.*)./', '$1', $response1);
 $j1 = json_decode($response, true);
 
+$definite_check = [];
 if ($urlexp)
 {
     $response = preg_replace('/explorerLoaded.(.*)./', '$1', $response2);
