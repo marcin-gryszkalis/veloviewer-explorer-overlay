@@ -196,7 +196,7 @@ if ($urlexp)
             else
             {
                 $t .= "$p";
-                $tiles[$t] = 1;
+                $tiles[$t] = $n;
             }
             $i++;
         }
@@ -269,7 +269,7 @@ foreach ($j1 as $n => $v)
         $xtile = floor((($y + 180) / 360) * pow(2, $zoom));
         $ytile = floor((1 - log(tan(deg2rad($x)) + 1 / cos(deg2rad($x))) / pi()) /2 * pow(2, $zoom));
 
-        $tiles["$xtile:$ytile"] = 1;
+        $tiles["$xtile:$ytile"] = $n;
 
         if ($prevxtile == 0 || $prevytile == 0 || (abs($prevxtile - $xtile) + abs($prevytile - $ytile)) <= 1) # first tile or adjacent tile
         {
