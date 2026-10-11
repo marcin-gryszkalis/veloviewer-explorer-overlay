@@ -314,48 +314,44 @@ file_put_contents("cache/$id.php", '<?php $exp = '.var_export($tiles, true).";\n
 $output .= '$stats_tiles = '.count($tiles).";\n";
 
 # calculate max square
-$max = 0;
+# dynamic programming: $dp["x:y"] = size of biggest square with top-left corner at x,y
+#   dp(x,y) = 1 + min(dp(x+1,y), dp(x,y+1), dp(x+1,y+1))
+# tiles are processed in descending x, then descending y order so neighbours are already known
+$coords = [];
 foreach (array_keys($tiles) as $e)
 {
     $a = explode(":", $e);
-    $x = $a[0];
-    $y = $a[1];
+    $coords[] = [(int)$a[0], (int)$a[1]];
+}
+usort($coords, fn($p, $q) => [$q[0], $q[1]] <=> [$p[0], $p[1]]);
 
-    $s = 1;
-    $broken = false;
-    foreach (range(1, 1000) as $s) # 1000x1000 square should be enough for everyone ;)
+$dp = [];
+$max = 0;
+$maxes = [];
+foreach ($coords as [$x, $y])
+{
+    $s = 1 + min(
+        $dp[($x+1).":".$y] ?? 0,
+        $dp[$x.":".($y+1)] ?? 0,
+        $dp[($x+1).":".($y+1)] ?? 0
+    );
+    $dp["$x:$y"] = $s;
+
+    if ($s > $max)
     {
-        foreach (range(0, $s) as $ix)
-        {
-            foreach (range(0, $s) as $iy)
-            {
-                if (!array_key_exists(($x+$ix).":".($y+$iy), $tiles))
-                {
-                    $broken = true;
-                    break 2;
-                }
-            }
-        }
-
-        if ($broken) # max is for previous $s, but we count from 0
-        {
-            if ($s >= $max)
-            {
-                $maxes[$e] = $s;
-                if ($s > $max)
-                {
-                    $max = $s;
-                }
-            }
-
-            break;
-        }
+        $max = $s;
+        $maxes = [];
     }
-
+    if ($s == $max)
+    {
+        $maxes["$x:$y"] = $s;
+    }
 }
 
 $output .= '$stats_maxsquare = '.$max.";\n";
 
+$maxsq_top = [];
+$maxsq_left = [];
 foreach (array_keys($maxes) as $m)
 {
     if ($maxes[$m] == $max)
