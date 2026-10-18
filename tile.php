@@ -3,6 +3,7 @@
 # default config
 $cfg['ms'] = 1;
 $cfg['cl'] = 1;
+$cfg['ou'] = 0;
 $cfg['cv'] = 'ff0000';
 $cfg['cc'] = '0000ff';
 $cfg['cg'] = 'ff0000';
@@ -53,6 +54,20 @@ if (!$anon)
     include("cache/maxsq-left-$id.php");
 }
 
+# only unvisited: no fill, no max square, grid only around unvisited squares
+$ou = !$anon && $cfg['ou'] == 1;
+if ($ou)
+{
+    $cfg['ms'] = 0;
+}
+
+# edge between square and its left/top neighbour is drawn unless both are visited
+function edge_visible($x, $y, $nx, $ny)
+{
+    global $ou, $exp;
+    return !$ou || !array_key_exists("$x:$y", $exp) || !array_key_exists("$nx:$ny", $exp);
+}
+
 $f_t = $f_l = true;
 
 $ox = $x; # original
@@ -98,7 +113,7 @@ if ($z >= $zoom)
 {
     # error_log("$x:$y = ".array_key_exists("$x:$y", $exp));
     
-    if (!$anon && array_key_exists("$x:$y", $exp))
+    if (!$anon && !$ou && array_key_exists("$x:$y", $exp))
     {
         imagefilledrectangle($png, 0, 0, 255, 255, $cfg['cl'] == 1 && in_cluster($x, $y, $exp) ? $c_bg_cluster : $c_bg);
     }
@@ -110,7 +125,7 @@ if ($z >= $zoom)
             imageline($png, 0, 0, 0, 255, $c_frame_maxsq);
             imageline($png, 1, 0, 1, 255, $c_frame_maxsq);
         }    
-        else
+        elseif (edge_visible($x, $y, $x - 1, $y))
         {
             imageline($png, 0, 0, 0, 255, $c_frame);
         }   
@@ -123,7 +138,7 @@ if ($z >= $zoom)
             imageline($png, 0, 0, 255, 0, $c_frame_maxsq);
             imageline($png, 0, 1, 255, 1, $c_frame_maxsq);
         }
-        else
+        elseif (edge_visible($x, $y, $x, $y - 1))
         {
             imageline($png, 0, 0, 255, 0, $c_frame);
         }
@@ -136,7 +151,7 @@ elseif ($z < $zoom) # lower limit is checked before
     $zm = 2 ** $dz; # zoom multiplier
     $r = 256 / $zm; # small square size
 
-    if (!$anon)
+    if (!$anon && !$ou)
     {
         $jx = 0;
         foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
@@ -150,7 +165,7 @@ elseif ($z < $zoom) # lower limit is checked before
                     imagefilledrectangle($png, 
                         $r * $jx, $r * $jy, 
                         $r * $jx + $r - 1, $r * $jy + $r - 1, 
-                        in_cluster($ix, $iy, $exp) ? $c_bg_cluster : $c_bg);
+                        $cfg['cl'] == 1 && in_cluster($ix, $iy, $exp) ? $c_bg_cluster : $c_bg);
                 }
                 $jy++;      
             }
@@ -158,7 +173,28 @@ elseif ($z < $zoom) # lower limit is checked before
         }
     }
 
-    if ($z >= $zoom-4) # no frames for lower zoom levels
+    if ($ou && $z >= $zoom-6) # unvisited squares are sparse, so frames are useful on lower levels
+    {
+        $jx = 0;
+        foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
+        {
+            $jy = 0;
+            foreach (range($y*$zm, $y*$zm + $zm - 1) as $iy)
+            {
+                if (edge_visible($ix, $iy, $ix - 1, $iy))
+                {
+                    imageline($png, $r * $jx, $r * $jy, $r * $jx, $r * $jy + $r - 1, $c_frame);
+                }
+                if (edge_visible($ix, $iy, $ix, $iy - 1))
+                {
+                    imageline($png, $r * $jx, $r * $jy, $r * $jx + $r - 1, $r * $jy, $c_frame);
+                }
+                $jy++;
+            }
+            $jx++;
+        }
+    }
+    elseif (!$ou && $z >= $zoom-4) # no frames for lower zoom levels
     {
         foreach (range(0, $zm - 1) as $i)
         {
@@ -168,7 +204,7 @@ elseif ($z < $zoom) # lower limit is checked before
     }
 
     # max square requires checking all squares again 
-    if (!$anon)
+    if (!$anon && $cfg['ms'])
     {
         $jx = 0;
         foreach (range($x*$zm, $x*$zm + $zm - 1) as $ix)
